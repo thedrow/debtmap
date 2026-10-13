@@ -39,6 +39,7 @@ jobs:
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
+        save-on-pull-request: "true"
         cache-key: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-
 
@@ -101,6 +102,7 @@ jobs:
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
+        save-on-pull-request: "true"
         cache-key: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-
 
@@ -172,6 +174,7 @@ jobs:
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
+        save-on-pull-request: "true"
         cache-key: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-
 
@@ -208,6 +211,7 @@ jobs:
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
+        save-on-pull-request: "true"
         cache-key: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ hashFiles('rust-toolchain.toml') }}-
 
@@ -233,6 +237,7 @@ jobs:
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
+        save-on-pull-request: "true"
         cache-key: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         restore-keys: ${{ runner.os }}-${{ runner.arch }}-mbx-ci-${{ github.job }}-
         toolchain: stable
