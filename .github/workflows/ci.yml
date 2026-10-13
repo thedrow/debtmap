@@ -36,6 +36,16 @@ jobs:
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
 
+    - name: Cache Cargo registry
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.cargo/registry/index
+          ~/.cargo/registry/cache
+          ~/.cargo/git/db
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-registry-
+
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
@@ -100,6 +110,16 @@ jobs:
 
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache Cargo registry
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.cargo/registry/index
+          ~/.cargo/registry/cache
+          ~/.cargo/git/db
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-registry-
 
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
@@ -175,6 +195,16 @@ jobs:
       with:
         components: clippy
 
+    - name: Cache Cargo registry
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.cargo/registry/index
+          ~/.cargo/registry/cache
+          ~/.cargo/git/db
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-registry-
+
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
@@ -214,6 +244,16 @@ jobs:
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
 
+    - name: Cache Cargo registry
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.cargo/registry/index
+          ~/.cargo/registry/cache
+          ~/.cargo/git/db
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-registry-
+
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
       with:
@@ -241,6 +281,16 @@ jobs:
 
     - name: Install Rust nightly
       uses: dtolnay/rust-toolchain@nightly
+
+    - name: Cache Cargo registry
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.cargo/registry/index
+          ~/.cargo/registry/cache
+          ~/.cargo/git/db
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-registry-
 
     - name: Set up mbx build cache
       uses: jdx/mr-boxington-action@47ce49b32025d93a7a2f4570815afaa2b7092240 # v1.7.2
