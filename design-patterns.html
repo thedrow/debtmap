@@ -1,0 +1,1008 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Design Pattern Detection - Debtmap Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive guide to Debtmap code complexity and technical debt analyzer">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-dedc95d2.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-94861fa4.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Debtmap Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/iepathos/debtmap" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="design-pattern-detection"><a class="header" href="#design-pattern-detection">Design Pattern Detection</a></h1>
+<p>Debtmap automatically detects common design patterns in your codebase to provide better architectural insights and reduce false positives in complexity analysis. When recognized design patterns are detected, Debtmap applies appropriate complexity adjustments to avoid penalizing idiomatic code.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Debtmap detects 7 user-facing design patterns across Python, JavaScript, TypeScript, and Rust, plus 2 internal-only patterns (Builder, Visitor) used for scoring adjustments:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Pattern</th><th>Primary Language</th><th>Detection Confidence</th><th>Type</th></tr>
+</thead>
+<tbody>
+<tr><td>Observer</td><td>Python, Rust</td><td>High (0.8-0.9)</td><td>User-facing</td></tr>
+<tr><td>Singleton</td><td>Python</td><td>High (0.85-0.95)</td><td>User-facing</td></tr>
+<tr><td>Factory</td><td>Python</td><td>Medium-High (0.7-0.85)</td><td>User-facing</td></tr>
+<tr><td>Strategy</td><td>Python</td><td>Medium (0.7-0.8)</td><td>User-facing</td></tr>
+<tr><td>Callback</td><td>Python, JavaScript</td><td>High (0.8-0.9)</td><td>User-facing</td></tr>
+<tr><td>Template Method</td><td>Python</td><td>Medium (0.7-0.8)</td><td>User-facing</td></tr>
+<tr><td>Dependency Injection</td><td>Python</td><td>Medium (0.65-0.75)</td><td>User-facing</td></tr>
+<tr><td>Builder</td><td>Rust</td><td>Internal</td><td><a href="#internal-pattern-detection">Internal Only</a></td></tr>
+<tr><td>Visitor</td><td>Rust</td><td>Internal</td><td><a href="#internal-pattern-detection">Internal Only</a></td></tr>
+</tbody>
+</table>
+</div>
+<p>Pattern detection serves multiple purposes:</p>
+<ul>
+<li><strong>Reduces false positives</strong>: Avoids flagging idiomatic pattern implementations as overly complex</li>
+<li><strong>Documents architecture</strong>: Automatically identifies architectural patterns in your codebase</li>
+<li><strong>Validates consistency</strong>: Helps ensure patterns are used correctly and completely</li>
+<li><strong>Guides refactoring</strong>: Identifies incomplete pattern implementations</li>
+</ul>
+<h2 id="pattern-detection-details"><a class="header" href="#pattern-detection-details">Pattern Detection Details</a></h2>
+<h3 id="observer-pattern"><a class="header" href="#observer-pattern">Observer Pattern</a></h3>
+<p>The Observer pattern is detected in Python and Rust by identifying abstract base classes with concrete implementations.</p>
+<p><strong>Detection Criteria (Python)</strong>:</p>
+<ul>
+<li>Abstract base class with <code>ABC</code>, <code>Protocol</code>, or <code>Interface</code> markers</li>
+<li>Abstract methods decorated with <code>@abstractmethod</code></li>
+<li>Concrete implementations inheriting from the interface</li>
+<li>Methods prefixed with <code>on_</code>, <code>handle_</code>, or <code>notify_</code></li>
+<li>Registration methods like <code>add_observer</code>, <code>register</code>, or <code>subscribe</code></li>
+<li>Notification methods like <code>notify</code>, <code>notify_all</code>, <code>trigger</code>, <code>emit</code></li>
+</ul>
+<p><strong>Detection Criteria (Rust)</strong>:</p>
+<ul>
+<li>Trait definitions with callback-style methods</li>
+<li>Multiple implementations of the same trait</li>
+<li>Trait registry tracking for cross-module detection</li>
+</ul>
+<p><strong>Example (Python)</strong>:</p>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+
+class EventObserver(ABC):
+    @abstractmethod
+    def on_event(self, data):
+        """Handle event notification"""
+        pass
+
+class LoggingObserver(EventObserver):
+    def on_event(self, data):
+        print(f"Event occurred: {data}")
+
+class EmailObserver(EventObserver):
+    def on_event(self, data):
+        send_email(f"Alert: {data}")
+
+class EventManager:
+    def __init__(self):
+        self.observers = []
+
+    def add_observer(self, observer: EventObserver):
+        self.observers.append(observer)
+
+    def notify_all(self, data):
+        for observer in self.observers:
+            observer.on_event(data)
+</code></pre>
+<p><strong>Confidence</strong>: High (0.8-0.9) when abstract base class, implementations, and registration/notification methods are present. Lower confidence (0.5-0.7) for partial implementations.</p>
+<h3 id="singleton-pattern"><a class="header" href="#singleton-pattern">Singleton Pattern</a></h3>
+<p>Singleton pattern detection identifies three common Python implementations: module-level singletons, <code>__new__</code> override, and decorator-based patterns.</p>
+<p><strong>Detection Criteria</strong>:</p>
+<ul>
+<li>Module-level variable assignments (e.g., <code>instance = MyClass()</code>)</li>
+<li>Classes overriding <code>__new__</code> to enforce single instance</li>
+<li>Classes decorated with <code>@singleton</code> or similar decorators</li>
+<li>Presence of instance caching logic</li>
+</ul>
+<p><strong>Example (Module-level)</strong>:</p>
+<pre><code class="language-python"># config.py
+class Config:
+    def __init__(self):
+        self.settings = {}
+
+    def load(self, path):
+        # Load configuration
+        pass
+
+# Single instance created at module level
+config = Config()
+</code></pre>
+<p><strong>Example (<code>__new__</code> override)</strong>:</p>
+<pre><code class="language-python">class DatabaseConnection:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __init__(self):
+        if not hasattr(self, 'initialized'):
+            self.initialized = True
+            self.connect()
+</code></pre>
+<p><strong>Example (Decorator-based)</strong>:</p>
+<pre><code class="language-python">def singleton(cls):
+    instances = {}
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return get_instance
+
+@singleton
+class Logger:
+    def __init__(self):
+        self.log_file = open('app.log', 'a')
+</code></pre>
+<p><strong>Confidence</strong>: Very High (0.9-0.95) for <code>__new__</code> override and decorator patterns. High (0.85) for module-level singletons with clear naming.</p>
+<h3 id="factory-pattern"><a class="header" href="#factory-pattern">Factory Pattern</a></h3>
+<p>Factory pattern detection identifies factory functions, factory classes, and factory registries based on naming conventions and structural patterns.</p>
+<p><strong>Detection Criteria</strong>:</p>
+<ul>
+<li>Functions with names containing <code>create_</code>, <code>make_</code>, <code>build_</code>, or <code>_factory</code></li>
+<li>Factory registry patterns (dictionaries mapping types to constructors)</li>
+<li>Functions that return instances of different types based on parameters</li>
+<li>Classes with factory methods</li>
+</ul>
+<p><strong>Example (Factory Function)</strong>:</p>
+<pre><code class="language-python">def create_logger(log_type: str):
+    if log_type == "file":
+        return FileLogger()
+    elif log_type == "console":
+        return ConsoleLogger()
+    elif log_type == "network":
+        return NetworkLogger()
+    else:
+        raise ValueError(f"Unknown logger type: {log_type}")
+</code></pre>
+<p><strong>Example (Registry-based Factory)</strong>:</p>
+<pre><code class="language-python"># Parser registry
+PARSERS = {
+    'json': JSONParser,
+    'xml': XMLParser,
+    'yaml': YAMLParser,
+}
+
+def create_parser(format: str):
+    parser_class = PARSERS.get(format)
+    if parser_class is None:
+        raise ValueError(f"No parser for format: {format}")
+    return parser_class()
+</code></pre>
+<p><strong>Example (Factory Method)</strong>:</p>
+<pre><code class="language-python">class DocumentFactory:
+    @staticmethod
+    def create_document(doc_type: str):
+        if doc_type == "pdf":
+            return PDFDocument()
+        elif doc_type == "word":
+            return WordDocument()
+        else:
+            return PlainTextDocument()
+</code></pre>
+<p><strong>Confidence</strong>: Medium-High (0.75-0.85) for functions with factory naming patterns. Lower confidence (0.6-0.7) for registry patterns without factory names.</p>
+<h3 id="strategy-pattern"><a class="header" href="#strategy-pattern">Strategy Pattern</a></h3>
+<p>Strategy pattern detection identifies interfaces with multiple implementations representing interchangeable algorithms.</p>
+<p><strong>Detection Criteria</strong>:</p>
+<ul>
+<li>Abstract base class or Protocol defining strategy interface</li>
+<li>Multiple concrete implementations</li>
+<li>Strategy interface typically has 1-2 core methods</li>
+<li>Used via composition (strategy object passed to context)</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+
+class CompressionStrategy(ABC):
+    @abstractmethod
+    def compress(self, data: bytes) -&gt; bytes:
+        pass
+
+class ZipCompression(CompressionStrategy):
+    def compress(self, data: bytes) -&gt; bytes:
+        return zlib.compress(data)
+
+class GzipCompression(CompressionStrategy):
+    def compress(self, data: bytes) -&gt; bytes:
+        return gzip.compress(data)
+
+class LzmaCompression(CompressionStrategy):
+    def compress(self, data: bytes) -&gt; bytes:
+        return lzma.compress(data)
+
+class FileCompressor:
+    def __init__(self, strategy: CompressionStrategy):
+        self.strategy = strategy
+
+    def compress_file(self, path):
+        data = read_file(path)
+        return self.strategy.compress(data)
+</code></pre>
+<p><strong>Confidence</strong>: Medium (0.7-0.8) based on interface structure and implementation count.</p>
+<h3 id="callback-pattern"><a class="header" href="#callback-pattern">Callback Pattern</a></h3>
+<p>Callback pattern detection identifies decorator-based callbacks commonly used in web frameworks and event handlers.</p>
+<p><strong>Detection Criteria</strong>:</p>
+<ul>
+<li>Decorators with patterns like <code>@route</code>, <code>@handler</code>, <code>@app.</code>, <code>@on</code>, <code>@callback</code></li>
+<li>Framework-specific decorators (Flask routes, FastAPI endpoints, event handlers)</li>
+<li>Functions registered as callbacks for events or hooks</li>
+</ul>
+<p><strong>Example (Flask Routes)</strong>:</p>
+<pre><code class="language-python">from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/api/users')
+def get_users():
+    return {"users": []}
+
+@app.route('/api/users/&lt;id&gt;')
+def get_user(id):
+    return {"user": find_user(id)}
+</code></pre>
+<p><strong>Example (Event Handler)</strong>:</p>
+<pre><code class="language-python">class EventBus:
+    def __init__(self):
+        self.handlers = {}
+
+    def on(self, event_name):
+        def decorator(func):
+            self.handlers[event_name] = func
+            return func
+        return decorator
+
+bus = EventBus()
+
+@bus.on('user.created')
+def handle_user_created(user):
+    send_welcome_email(user)
+
+@bus.on('order.placed')
+def handle_order_placed(order):
+    process_payment(order)
+</code></pre>
+<p><strong>Confidence</strong>: High (0.8-0.9) for framework decorator patterns. Medium (0.6-0.7) for custom callback implementations.</p>
+<h3 id="template-method-pattern"><a class="header" href="#template-method-pattern">Template Method Pattern</a></h3>
+<p>Template method pattern detection identifies base classes with template methods that call abstract hook methods.</p>
+<p><strong>Detection Criteria</strong>:</p>
+<ul>
+<li>Base class with concrete methods (template methods)</li>
+<li>Abstract methods intended to be overridden (hook methods)</li>
+<li>Template method calls hook methods in a defined sequence</li>
+<li>Subclasses override hook methods but not template method</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<pre><code class="language-python">from abc import ABC, abstractmethod
+
+class DataProcessor(ABC):
+    def process(self, data):
+        """Template method defining the algorithm skeleton"""
+        raw = self.load_data(data)
+        validated = self.validate(raw)
+        transformed = self.transform(validated)
+        self.save(transformed)
+
+    @abstractmethod
+    def load_data(self, source):
+        """Hook: Load data from source"""
+        pass
+
+    @abstractmethod
+    def validate(self, data):
+        """Hook: Validate data"""
+        pass
+
+    def transform(self, data):
+        """Hook: Transform data (optional override)"""
+        return data
+
+    @abstractmethod
+    def save(self, data):
+        """Hook: Save processed data"""
+        pass
+
+class CSVProcessor(DataProcessor):
+    def load_data(self, source):
+        return read_csv(source)
+
+    def validate(self, data):
+        return [row for row in data if row]
+
+    def save(self, data):
+        write_csv('output.csv', data)
+</code></pre>
+<p><strong>Confidence</strong>: Medium (0.7-0.8) based on combination of abstract and concrete methods in base class.</p>
+<h3 id="dependency-injection-pattern"><a class="header" href="#dependency-injection-pattern">Dependency Injection Pattern</a></h3>
+<p>Dependency injection pattern detection identifies classes that receive dependencies through constructors or setters rather than creating them internally.</p>
+<p><strong>Detection Criteria</strong>:</p>
+<ul>
+<li>Constructor parameters accepting interface/protocol types</li>
+<li>Setter methods for injecting dependencies</li>
+<li>Optional dependencies with default values</li>
+<li>Absence of hard-coded object instantiation inside the class</li>
+</ul>
+<p><strong>Example (Constructor Injection)</strong>:</p>
+<pre><code class="language-python">class UserService:
+    def __init__(self,
+                 user_repository: UserRepository,
+                 email_service: EmailService,
+                 logger: Logger):
+        self.user_repo = user_repository
+        self.email_service = email_service
+        self.logger = logger
+
+    def create_user(self, username, email):
+        user = self.user_repo.create(username, email)
+        self.email_service.send_welcome(email)
+        self.logger.info(f"Created user: {username}")
+        return user
+</code></pre>
+<p><strong>Example (Setter Injection)</strong>:</p>
+<pre><code class="language-python">class ReportGenerator:
+    def __init__(self):
+        self.data_source = None
+        self.formatter = None
+
+    def set_data_source(self, source):
+        self.data_source = source
+
+    def set_formatter(self, formatter):
+        self.formatter = formatter
+
+    def generate(self):
+        data = self.data_source.fetch()
+        return self.formatter.format(data)
+</code></pre>
+<p><strong>Confidence</strong>: Medium (0.65-0.75) based on constructor signatures and absence of direct instantiation.</p>
+<h2 id="internal-pattern-detection"><a class="header" href="#internal-pattern-detection">Internal Pattern Detection</a></h2>
+<p>Debtmap also detects certain patterns internally for analysis purposes, but these are not exposed as user-facing design pattern detection features. These internal patterns help improve the accuracy of other analyses like god object detection and complexity calculations.</p>
+<h3 id="builder-pattern-internal-use-only"><a class="header" href="#builder-pattern-internal-use-only">Builder Pattern (Internal Use Only)</a></h3>
+<p>The Builder pattern is detected internally during <strong>god object detection</strong> to avoid false positives. Classes that follow the builder pattern are given adjusted scores in god object analysis since builder classes naturally have many methods and fields.</p>
+<p><strong>Note</strong>: Builder pattern detection is internal-only and used for scoring adjustments.</p>
+<p><strong>Internal Detection Criteria</strong>:</p>
+<ul>
+<li>Struct with builder suffix or builder-related naming</li>
+<li>Methods returning <code>Self</code> for chaining</li>
+<li>Final <code>build()</code> method returning the constructed type</li>
+<li>Type-state pattern usage (optional)</li>
+</ul>
+<p><strong>Example</strong> (Internal Detection):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct HttpClientBuilder {
+    base_url: Option&lt;String&gt;,
+    timeout: Duration,
+    headers: HashMap&lt;String, String&gt;,
+}
+
+impl HttpClientBuilder {
+    pub fn new() -&gt; Self { /* ... */ }
+
+    // Chaining methods detected internally
+    pub fn base_url(mut self, url: impl Into&lt;String&gt;) -&gt; Self { /* ... */ }
+    pub fn timeout(mut self, timeout: Duration) -&gt; Self { /* ... */ }
+    pub fn header(mut self, key: String, value: String) -&gt; Self { /* ... */ }
+
+    pub fn build(self) -&gt; Result&lt;HttpClient&gt; { /* ... */ }
+}
+<span class="boring">}</span></code></pre>
+<p><strong>Why Internal Only</strong>: Builder patterns are a legitimate design choice for complex object construction. Debtmap detects them to prevent flagging builder classes as god objects, but doesn’t report them as design patterns since they don’t require complexity adjustments like other patterns.</p>
+<p><strong>Source</strong>: <code>src/organization/builder_pattern.rs</code> - Used for god object detection score adjustment</p>
+<h3 id="visitor-pattern-internal-use-only"><a class="header" href="#visitor-pattern-internal-use-only">Visitor Pattern (Internal Use Only)</a></h3>
+<p>The Visitor pattern is detected internally for <strong>complexity analysis normalization</strong>. When exhaustive pattern matching is detected (typical of visitor patterns), Debtmap applies logarithmic complexity scaling instead of linear scaling to avoid penalizing idiomatic exhaustive match expressions.</p>
+<p><strong>Note</strong>: Visitor pattern detection is internal-only and used for complexity scaling adjustments.</p>
+<p><strong>Internal Detection Criteria</strong>:</p>
+<ul>
+<li>Trait with visit methods for different types</li>
+<li>Implementations providing behavior for each visited type</li>
+<li>Exhaustive pattern matching across enum variants</li>
+<li>Used primarily for AST traversal or data structure processing</li>
+</ul>
+<p><strong>Example</strong> (Internal Detection):</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Visitor {
+    fn visit_function(&amp;mut self, func: &amp;Function);
+    fn visit_class(&amp;mut self, class: &amp;Class);
+    fn visit_module(&amp;mut self, module: &amp;Module);
+}
+
+impl Visitor for ComplexityVisitor {
+    fn visit_function(&amp;mut self, func: &amp;Function) {
+        // Exhaustive matching detected for complexity scaling
+        match &amp;func.body {
+            FunctionBody::Simple =&gt; { /* ... */ }
+            FunctionBody::Complex(statements) =&gt; { /* ... */ }
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<p><strong>Why Internal Only</strong>: Visitor patterns often involve exhaustive pattern matching which can appear complex by traditional metrics. Debtmap detects these patterns to apply logarithmic scaling (<code>log2(match_arms) * avg_complexity</code>) instead of linear, preventing false positives in complexity analysis. This is a complexity adjustment mechanism, not a user-visible pattern detection feature.</p>
+<p><strong>Source</strong>: <code>src/complexity/visitor_detector.rs</code> - Used for complexity analysis, not pattern reporting</p>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<h3 id="current-implementation-status"><a class="header" href="#current-implementation-status">Current Implementation Status</a></h3>
+<p>Pattern detection is currently <strong>internal-only</strong> and used for analysis adjustments. It is not exposed through <code>analyze</code> CLI flags.</p>
+<p><strong>Status Summary</strong>:</p>
+<ul>
+<li>✅ Pattern detection logic implemented (7 user-facing patterns)</li>
+<li>⚠️ Pattern detection results not currently exposed in output formats</li>
+</ul>
+<p>Pattern detection is primarily used internally for:</p>
+<ul>
+<li>Adjusting complexity scores to avoid false positives</li>
+<li>Informing god object detection (Builder pattern)</li>
+<li>Normalizing exhaustive pattern matching complexity (Visitor pattern)</li>
+</ul>
+<h3 id="pattern-types"><a class="header" href="#pattern-types">Pattern Types</a></h3>
+<ul>
+<li><code>observer</code> - Observer pattern detection</li>
+<li><code>singleton</code> - Singleton pattern detection</li>
+<li><code>factory</code> - Factory pattern detection</li>
+<li><code>strategy</code> - Strategy pattern detection</li>
+<li><code>callback</code> - Callback pattern detection</li>
+<li><code>template_method</code> - Template method pattern detection</li>
+<li><code>dependency_injection</code> - Dependency injection detection</li>
+</ul>
+<p><strong>Note</strong>: Builder and Visitor patterns are detected internally for scoring adjustments. See <a href="#internal-pattern-detection">Internal Pattern Detection</a> for details.</p>
+<h3 id="roadmap-pattern-detection-output"><a class="header" href="#roadmap-pattern-detection-output">Roadmap: Pattern Detection Output</a></h3>
+<p>When fully integrated, pattern detection results will appear in debtmap’s output formats:</p>
+<p><strong>Planned Terminal Format</strong>:</p>
+<pre><code>Design Patterns Detected:
+  Observer Pattern (confidence: 0.88)
+    Interface: EventListener (event_system.py:4)
+    Implementations: AuditLogger, SessionManager
+</code></pre>
+<p><strong>Planned JSON Format</strong>:</p>
+<pre><code class="language-json">{
+  "pattern_instances": [
+    {
+      "pattern_type": "Observer",
+      "confidence": 0.88,
+      "location": "event_system.py:4",
+      "implementations": ["AuditLogger", "SessionManager"]
+    }
+  ]
+}
+</code></pre>
+<p><strong>Current Behavior</strong>: Pattern detection is used internally during analysis to improve accuracy. Patterns are being detected, but not explicitly reported in output.</p>
+<h2 id="confidence-scoring"><a class="header" href="#confidence-scoring">Confidence Scoring</a></h2>
+<p>Pattern detection uses a confidence scoring system (0.0-1.0) to indicate match quality:</p>
+<ul>
+<li><strong>0.9-1.0</strong>: Very High - Strong structural match with all key elements present</li>
+<li><strong>0.8-0.9</strong>: High - Clear pattern with most elements present</li>
+<li><strong>0.7-0.8</strong>: Medium-High - Pattern present with some uncertainty</li>
+<li><strong>0.6-0.7</strong>: Medium - Possible pattern with limited evidence</li>
+<li><strong>0.5-0.6</strong>: Low - Weak match, may be false positive</li>
+</ul>
+<p><strong>Default Threshold</strong>: 0.7 - Only patterns with 70% or higher confidence are reported by default.</p>
+<p><strong>How Confidence is Calculated</strong>:</p>
+<p>Each pattern detector calculates confidence holistically based on multiple factors:</p>
+<ol>
+<li><strong>Structural completeness</strong>: Are all expected elements present?</li>
+<li><strong>Naming conventions</strong>: Do names match expected patterns?</li>
+<li><strong>Implementation count</strong>: Are there enough implementations to confirm the pattern?</li>
+<li><strong>Cross-validation</strong>: Do different detection heuristics agree?</li>
+</ol>
+<p>For example, Observer pattern confidence is calculated holistically based on:</p>
+<ul>
+<li>Presence of abstract base class with appropriate markers (<code>ABC</code>, <code>Protocol</code>, etc.)</li>
+<li>Number of concrete implementations found</li>
+<li>Detection of registration methods (<code>add_observer</code>, <code>register</code>, <code>subscribe</code>)</li>
+<li>Detection of notification methods (<code>notify</code>, <code>notify_all</code>, <code>trigger</code>, <code>emit</code>)</li>
+<li>Naming conventions matching observer patterns</li>
+</ul>
+<p>Higher confidence requires more structural elements to be present. The calculation is not a simple sum of individual weights but rather a holistic assessment of pattern completeness.</p>
+<h2 id="cross-file-pattern-detection"><a class="header" href="#cross-file-pattern-detection">Cross-File Pattern Detection</a></h2>
+<p>Debtmap can detect patterns that span multiple files, particularly for the Observer pattern where interfaces and implementations may be in separate modules.</p>
+<p><strong>How Cross-File Detection Works</strong>:</p>
+<ol>
+<li><strong>Import Tracking</strong>: Debtmap tracks imports to understand module dependencies</li>
+<li><strong>Interface Registry</strong>: Abstract base classes are registered globally</li>
+<li><strong>Implementation Matching</strong>: Implementations in other files are matched to registered interfaces</li>
+<li><strong>Cross-Module Context</strong>: A shared context links related files</li>
+</ol>
+<p><strong>Example</strong>:</p>
+<pre><code class="language-python"># interfaces/observer.py
+from abc import ABC, abstractmethod
+
+class EventObserver(ABC):
+    @abstractmethod
+    def on_event(self, data):
+        pass
+
+# observers/logging_observer.py
+from interfaces.observer import EventObserver
+
+class LoggingObserver(EventObserver):
+    def on_event(self, data):
+        log(data)
+
+# observers/email_observer.py
+from interfaces.observer import EventObserver
+
+class EmailObserver(EventObserver):
+    def on_event(self, data):
+        send_email(data)
+</code></pre>
+<p>Debtmap detects this as a single Observer pattern with cross-file implementations.</p>
+<p><strong>Limitations</strong>:</p>
+<ul>
+<li>Only works for explicitly imported interfaces</li>
+<li>Requires static import analysis (dynamic imports may not be tracked)</li>
+<li>Most effective within a single project (not across external dependencies)</li>
+</ul>
+<h2 id="rust-specific-pattern-detection"><a class="header" href="#rust-specific-pattern-detection">Rust-Specific Pattern Detection</a></h2>
+<h3 id="trait-based-patterns"><a class="header" href="#trait-based-patterns">Trait-Based Patterns</a></h3>
+<p>Rust pattern detection leverages the trait system for identifying patterns:</p>
+<p><strong>Trait Registry</strong>: Tracks trait definitions and implementations across modules</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Trait registered for pattern detection
+pub trait EventHandler {
+    fn handle(&amp;self, event: &amp;Event);
+}
+
+// Multiple implementations tracked
+impl EventHandler for LogHandler { /* ... */ }
+impl EventHandler for MetricsHandler { /* ... */ }
+impl EventHandler for AlertHandler { /* ... */ }
+<span class="boring">}</span></code></pre>
+<p><strong>Observer Pattern via Traits</strong>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Observable {
+    fn subscribe(&amp;mut self, observer: Box&lt;dyn Observer&gt;);
+    fn notify(&amp;self, event: &amp;Event);
+}
+
+pub trait Observer {
+    fn on_event(&amp;self, event: &amp;Event);
+}
+<span class="boring">}</span></code></pre>
+<p><strong>Differences from Python Detection</strong>:</p>
+<ul>
+<li>Traits are more explicit than Python’s ABC</li>
+<li>Type system ensures implementation correctness</li>
+<li>No runtime reflection needed for detection</li>
+<li>Pattern matching exhaustiveness helps identify Visitor pattern</li>
+</ul>
+<h2 id="integration-with-complexity-analysis"><a class="header" href="#integration-with-complexity-analysis">Integration with Complexity Analysis</a></h2>
+<p>Debtmap has two separate but complementary systems for patterns:</p>
+<h3 id="1-design-pattern-detection-this-feature"><a class="header" href="#1-design-pattern-detection-this-feature">1. Design Pattern Detection (This Feature)</a></h3>
+<p>The 7 user-facing design patterns documented in this chapter (Observer, Singleton, Factory, Strategy, Callback, Template Method, Dependency Injection) are <strong>detected and reported</strong> to users. These patterns appear in the output to document architectural choices but do not directly adjust complexity scores.</p>
+<p><strong>Purpose</strong>: Architectural documentation and pattern identification</p>
+<p><strong>Output</strong>: Pattern instances with confidence scores in terminal, JSON, and markdown formats</p>
+<h3 id="2-complexity-pattern-adjustments-internal-system"><a class="header" href="#2-complexity-pattern-adjustments-internal-system">2. Complexity Pattern Adjustments (Internal System)</a></h3>
+<p>Debtmap has a separate internal system in <code>src/complexity/python_pattern_adjustments.rs</code> that detects specific complexity patterns and applies multipliers. These are <strong>different patterns</strong> from the user-facing design patterns:</p>
+<p><strong>Internal complexity patterns include</strong>:</p>
+<ul>
+<li>Dictionary Dispatch (0.5x multiplier)</li>
+<li>Strategy Pattern detection via conditionals (0.6x multiplier)</li>
+<li>Comprehension patterns (0.8x multiplier)</li>
+<li>Other Python-specific complexity patterns</li>
+</ul>
+<p><strong>Purpose</strong>: Adjust complexity scores to avoid penalizing idiomatic code</p>
+<p><strong>Output</strong>: Applied automatically during complexity calculation, not reported separately</p>
+<h3 id="relationship-between-the-systems"><a class="header" href="#relationship-between-the-systems">Relationship Between the Systems</a></h3>
+<p>Currently, these are <strong>independent systems</strong>:</p>
+<ul>
+<li>Design pattern detection focuses on architectural patterns</li>
+<li>Complexity adjustments focus on implementation patterns</li>
+</ul>
+<p>The design pattern detection results are primarily for documentation and architectural insights. The complexity scoring uses its own pattern recognition to apply appropriate adjustments.</p>
+<h3 id="visitor-pattern-special-case"><a class="header" href="#visitor-pattern-special-case">Visitor Pattern Special Case</a></h3>
+<p>The Visitor pattern (internal-only) is used for complexity analysis. When exhaustive pattern matching is detected, debtmap applies <strong>logarithmic scaling</strong>:</p>
+<pre><code>visitor_complexity = log2(match_arms) * average_arm_complexity
+</code></pre>
+<p>This prevents exhaustive pattern matching from being flagged as overly complex. See <a href="#visitor-pattern-internal-use-only">Visitor Pattern (Internal Use Only)</a> for more details.</p>
+<p><strong>See Also</strong>:</p>
+<ul>
+<li><a href="./analysis-guide/complexity-metrics.html">Complexity Analysis</a> - How complexity is calculated</li>
+<li><a href="./scoring-strategies.html">Scoring Strategies</a> - Complexity adjustments and multipliers</li>
+</ul>
+<h2 id="practical-examples"><a class="header" href="#practical-examples">Practical Examples</a></h2>
+<h3 id="example-1-observer-pattern-code-structure"><a class="header" href="#example-1-observer-pattern-code-structure">Example 1: Observer Pattern Code Structure</a></h3>
+<p>Pattern detection identifies Observer implementations even though results are not yet shown in output:</p>
+<pre><code class="language-python"># event_system.py
+from abc import ABC, abstractmethod
+
+class EventListener(ABC):
+    @abstractmethod
+    def on_user_login(self, user):
+        pass
+
+class AuditLogger(EventListener):
+    def on_user_login(self, user):
+        audit_log.write(f"User {user.id} logged in")
+
+class SessionManager(EventListener):
+    def on_user_login(self, user):
+        create_session(user)
+
+class EventDispatcher:
+    def __init__(self):
+        self.listeners = []
+
+    def add_listener(self, listener):
+        self.listeners.append(listener)
+
+    def notify_login(self, user):
+        for listener in self.listeners:
+            listener.on_user_login(user)
+</code></pre>
+<p><strong>Current Behavior</strong>: Debtmap internally detects this Observer pattern (confidence ~0.88) and uses it to adjust complexity scoring. The pattern structure is recognized but not reported in output.</p>
+<p><strong>Source</strong>: Pattern detection logic in <code>src/analysis/patterns/observer.rs</code></p>
+<h3 id="example-2-factory-pattern-detection-criteria"><a class="header" href="#example-2-factory-pattern-detection-criteria">Example 2: Factory Pattern Detection Criteria</a></h3>
+<p>Debtmap detects factory patterns based on naming and structure:</p>
+<pre><code class="language-python">def create_logger(log_type: str):
+    """Factory function - detected by 'create_' prefix"""
+    if log_type == "file":
+        return FileLogger()
+    elif log_type == "console":
+        return ConsoleLogger()
+    else:
+        return NetworkLogger()
+</code></pre>
+<p><strong>Current Behavior</strong>: The factory pattern detector (in <code>src/analysis/patterns/factory.rs</code>) identifies this as a Factory pattern with medium-high confidence (~0.75-0.85) based on:</p>
+<ul>
+<li>Function name contains <code>create_</code></li>
+<li>Returns different types based on parameter</li>
+<li>Multiple instantiation paths</li>
+</ul>
+<p>This information is used internally to adjust complexity scores for factory functions.</p>
+<h3 id="example-3-impact-on-complexity-analysis"><a class="header" href="#example-3-impact-on-complexity-analysis">Example 3: Impact on Complexity Analysis</a></h3>
+<p>While pattern detection results aren’t directly shown, their effect can be observed:</p>
+<pre><code class="language-bash"># Run standard analysis
+debtmap analyze myapp/
+
+# Pattern detection is applied internally during scoring
+</code></pre>
+<p><strong>Expected Differences</strong>:</p>
+<ul>
+<li>Factory functions: Lower complexity scores with pattern detection</li>
+<li>Observer implementations: Adjusted scores for callback registration</li>
+<li>Template methods: Reduced penalty for abstract method patterns</li>
+<li>Builder classes: Not flagged as god objects despite many methods</li>
+</ul>
+<h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
+<h3 id="1-false-positive-reduction-active"><a class="header" href="#1-false-positive-reduction-active">1. False Positive Reduction (Active)</a></h3>
+<p><strong>Problem</strong>: Complex factory functions flagged as too complex
+<strong>Solution</strong>: Pattern detection automatically adjusts complexity scores for recognized factory patterns</p>
+<p><strong>Current Behavior</strong>:</p>
+<pre><code class="language-bash">debtmap analyze myapp/
+</code></pre>
+<p>Factory functions are automatically detected and receive adjusted complexity scores. This happens internally without requiring specific flags.</p>
+<p><strong>Source</strong>: <code>src/analysis/patterns/factory.rs</code> applies multipliers to factory function complexity</p>
+<h3 id="2-builder-pattern-god-object-prevention-active"><a class="header" href="#2-builder-pattern-god-object-prevention-active">2. Builder Pattern God Object Prevention (Active)</a></h3>
+<p><strong>Problem</strong>: Builder classes flagged as god objects due to many chaining methods
+<strong>Solution</strong>: Builder pattern detection automatically excludes builder classes from god object analysis</p>
+<p><strong>Current Behavior</strong>:</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// This builder class is automatically recognized
+pub struct HttpClientBuilder {
+    // Many fields and methods
+    pub fn base_url(mut self, url: String) -&gt; Self { /* ... */ }
+    pub fn timeout(mut self, duration: Duration) -&gt; Self { /* ... */ }
+    pub fn build(self) -&gt; HttpClient { /* ... */ }
+}
+<span class="boring">}</span></code></pre>
+<p>Debtmap detects the builder pattern (chaining methods returning <code>Self</code>, final <code>build()</code> method) and adjusts scoring accordingly.</p>
+<p><strong>Source</strong>: <code>src/organization/builder_pattern.rs</code> for god object detection adjustment</p>
+<h3 id="3-future-use-case-architecture-documentation-planned"><a class="header" href="#3-future-use-case-architecture-documentation-planned">3. Future Use Case: Architecture Documentation (Planned)</a></h3>
+<p><strong>Problem</strong>: Undocumented design patterns in legacy codebase
+<strong>Solution</strong>: When pattern output is integrated, users will be able to generate architectural pattern reports</p>
+<p><strong>Current Workaround</strong>: Review complexity adjustments and god object scoring to infer where patterns are detected</p>
+<h3 id="4-future-use-case-pattern-consistency-validation-planned"><a class="header" href="#4-future-use-case-pattern-consistency-validation-planned">4. Future Use Case: Pattern Consistency Validation (Planned)</a></h3>
+<p><strong>Problem</strong>: Inconsistent Observer implementations across the codebase
+<strong>Solution</strong>: When integrated, users can filter analysis to specific pattern types</p>
+<p><strong>Current Status</strong>: Pattern detection logic exists and works internally, but results aren’t yet exposed in output</p>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="pattern-detection-not-visible-in-output"><a class="header" href="#pattern-detection-not-visible-in-output">Pattern Detection Not Visible in Output</a></h3>
+<p><strong>Symptoms</strong>: Cannot see detected patterns in analysis output</p>
+<p><strong>Explanation</strong>: Pattern detection is currently <strong>internal-only</strong>. Patterns are detected and used to adjust complexity scoring, but results are not exposed in terminal, JSON, or markdown output.</p>
+<p><strong>Current Behavior</strong>:</p>
+<ul>
+<li>Patterns ARE being detected (see <code>src/analysis/patterns/mod.rs</code>)</li>
+<li>Detection results affect complexity scores and god object analysis</li>
+<li>Pattern information is not included in output formatting</li>
+</ul>
+<p><strong>Solution</strong>: To benefit from pattern detection:</p>
+<ol>
+<li>Run standard analysis - patterns are automatically detected</li>
+<li>Check if complexity scores seem adjusted for factory/callback patterns</li>
+<li>Verify builder classes aren’t flagged as god objects</li>
+</ol>
+<p><strong>Future Integration</strong>: Output formatting can expose pattern details when pattern reporting is implemented.</p>
+<h3 id="builder-or-visitor-pattern-not-available-via-cli"><a class="header" href="#builder-or-visitor-pattern-not-available-via-cli">Builder or Visitor Pattern Not Available via CLI</a></h3>
+<p><strong>Symptoms</strong>: Builder and Visitor patterns are not shown as user-facing pattern results</p>
+<p><strong>Explanation</strong>: Builder and Visitor patterns are <strong>intentionally internal-only</strong> and will not be available as user-facing pattern detection features:</p>
+<ul>
+<li><strong>Builder</strong>: Used during god object detection to adjust scores for builder classes (see <code>src/organization/builder_pattern.rs</code>)</li>
+<li><strong>Visitor</strong>: Used for complexity analysis to apply logarithmic scaling to exhaustive match expressions (see <code>src/complexity/visitor_detector.rs</code>)</li>
+</ul>
+<p><strong>Solution</strong>: These patterns are automatically detected when needed for internal analyses.</p>
+<p><strong>Available user-facing patterns</strong>: <code>observer</code>, <code>singleton</code>, <code>factory</code>, <code>strategy</code>, <code>callback</code>, <code>template_method</code>, <code>dependency_injection</code></p>
+<h3 id="false-positive-complexity-adjustments"><a class="header" href="#false-positive-complexity-adjustments">False Positive Complexity Adjustments</a></h3>
+<p><strong>Symptoms</strong>: Function with <code>create_</code> prefix gets lower complexity score but isn’t actually a factory</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol>
+<li>Naming collision (e.g., <code>create_session()</code> that doesn’t create objects)</li>
+<li>Overly broad pattern matching heuristics</li>
+</ol>
+<p><strong>Current Workaround</strong>: Pattern detection cannot currently be disabled or tuned per-file.</p>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="current-recommendations"><a class="header" href="#current-recommendations">Current Recommendations</a></h3>
+<ol>
+<li><strong>Trust automatic detection</strong>: Pattern detection runs automatically with sensible defaults (threshold 0.7, all 7 patterns enabled)</li>
+<li><strong>Review complexity scores</strong>: Lower-than-expected complexity for factory/callback functions indicates pattern detection is working</li>
+<li><strong>Check builder classes</strong>: If builder classes aren’t flagged as god objects, builder pattern detection is working correctly</li>
+<li><strong>Follow pattern idioms</strong>: Use standard naming conventions (<code>create_</code>, <code>make_</code>, <code>@abstractmethod</code>, etc.) to ensure patterns are recognized</li>
+<li><strong>Structure code clearly</strong>: Well-structured patterns (clear base classes, explicit implementations) have higher confidence scores</li>
+</ol>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<h3 id="current-state"><a class="header" href="#current-state">Current State</a></h3>
+<p>Debtmap’s design pattern detection <strong>exists and works internally</strong> with the following characteristics:</p>
+<p><strong>Implemented Features</strong>:</p>
+<ul>
+<li>✅ <strong>7 user-facing patterns</strong>: Observer, Singleton, Factory, Strategy, Callback, Template Method, Dependency Injection</li>
+<li>✅ <strong>2 internal patterns</strong>: Builder (for god object detection), Visitor (for complexity normalization)</li>
+<li>✅ <strong>Pattern detection logic</strong>: Fully implemented in <code>src/analysis/patterns/</code></li>
+<li>✅ <strong>Confidence scoring</strong>: 0.0-1.0 scale with holistic assessment</li>
+<li>✅ <strong>Cross-file detection</strong>: Tracks imports and interfaces across modules</li>
+<li>✅ <strong>Rust trait support</strong>: Leverages trait system for pattern detection</li>
+<li>✅ <strong>Complexity integration</strong>: Automatically adjusts scores to reduce false positives</li>
+</ul>
+<p><strong>Partially Implemented</strong>:</p>
+<ul>
+<li>⚠️ <strong>Output formatting</strong>: <code>PatternInstance</code> type exists but not exposed in output</li>
+</ul>
+<p><strong>Not Yet Implemented</strong>:</p>
+<ul>
+<li>❌ <strong>Pattern output in terminal/JSON/markdown</strong>: Detection results not shown to users</li>
+<li>❌ <strong>User configuration</strong>: Cannot currently control pattern detection via CLI or config file</li>
+<li>❌ <strong>Pattern-specific reports</strong>: Cannot filter or focus on specific pattern types</li>
+</ul>
+<h3 id="impact"><a class="header" href="#impact">Impact</a></h3>
+<p>Pattern detection <strong>significantly improves analysis accuracy</strong> even without visible output:</p>
+<ul>
+<li><strong>Reduces false positives</strong>: Factory functions, callbacks, and template methods get appropriate complexity scores</li>
+<li><strong>Prevents god object misclassification</strong>: Builder classes recognized and excluded from god object detection</li>
+<li><strong>Normalizes exhaustive matching</strong>: Visitor pattern detection applies logarithmic scaling to pattern matching</li>
+<li><strong>Supports multiple languages</strong>: Works across Python, JavaScript, TypeScript, and Rust</li>
+</ul>
+<h3 id="future-integration"><a class="header" href="#future-integration">Future Integration</a></h3>
+<p>When CLI and output integration is complete, users will be able to:</p>
+<ul>
+<li>View detected patterns in analysis output</li>
+<li>Generate architectural documentation from pattern detection results</li>
+<li>Validate pattern consistency across codebases</li>
+</ul>
+<p>The foundation is solid - pattern detection works correctly and provides value. The remaining work is connecting the detection logic to user-facing configuration and output.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="coverage-integration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="entropy-analysis.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="coverage-integration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="entropy-analysis.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

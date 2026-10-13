@@ -1,0 +1,1189 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CLI Reference - Debtmap Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive guide to Debtmap code complexity and technical debt analyzer">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-dedc95d2.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-94861fa4.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Debtmap Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/iepathos/debtmap" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="cli-reference"><a class="header" href="#cli-reference">CLI Reference</a></h1>
+<p>Complete reference for Debtmap command-line interface.</p>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><code class="language-bash"># Basic analysis
+debtmap analyze src/
+
+# With coverage integration
+debtmap analyze src/ --coverage-file coverage.lcov
+
+# Generate JSON report
+debtmap analyze . --format json --output report.json
+
+# Show top 10 priority items only
+debtmap analyze . --top 10 --min-priority high
+
+# Initialize configuration and validate
+debtmap init
+debtmap validate . --config debtmap.toml
+</code></pre>
+<h2 id="global-options"><a class="header" href="#global-options">Global Options</a></h2>
+<p>Options that apply to all commands:</p>
+<ul>
+<li><code>--show-config-sources</code> - Show where each configuration value came from (spec 201)
+<ul>
+<li>Displays the source of each configuration value (default, config file, environment, CLI)</li>
+<li>Useful for debugging configuration precedence issues</li>
+</ul>
+</li>
+<li><code>--config &lt;PATH&gt;</code> - Custom config file path (highest-precedence file layer)
+<ul>
+<li>Can also use <code>DEBTMAP_CONFIG</code> environment variable</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash"># Show configuration sources
+debtmap --show-config-sources analyze .
+
+# Use custom config file
+debtmap --config /path/to/debtmap.toml validate .
+</code></pre>
+<h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
+<p>Debtmap provides seven main commands: five for analysis and validation, plus two debugging tools.</p>
+<h3 id="analyze"><a class="header" href="#analyze"><code>analyze</code></a></h3>
+<p>Analyze code for complexity and technical debt.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap analyze &lt;PATH&gt; [OPTIONS]
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>&lt;PATH&gt;</code> - Path to analyze (file or directory)</li>
+</ul>
+<p><strong>Description:</strong>
+Primary command for code analysis. Supports multiple output formats (json, markdown, terminal), coverage file integration, parallel processing, context-aware risk analysis, and comprehensive filtering options.</p>
+<p>See <a href="#options">Options</a> section below for all available flags.</p>
+<h3 id="init"><a class="header" href="#init"><code>init</code></a></h3>
+<p>Initialize a Debtmap configuration file.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap init [OPTIONS]
+</code></pre>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>-f, --force</code> - Force overwrite existing config</li>
+</ul>
+<p><strong>Description:</strong>
+Creates a <code>.debtmap.toml</code> configuration file in the current directory with default settings. Use <code>--force</code> to overwrite an existing configuration file.</p>
+<h3 id="config-check"><a class="header" href="#config-check"><code>config check</code></a></h3>
+<p>Check a configuration file for TOML syntax errors, unknown keys, and invalid values.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash"># Check the nearest .debtmap.toml
+debtmap config check
+
+# Check an explicit file
+debtmap --config path/to/debtmap.toml config check
+</code></pre>
+<p>Unknown keys are reported together, with a suggested canonical key when there is one clear match. The command exits with a non-zero status when the configuration is invalid, making it suitable for CI.</p>
+<h3 id="validate"><a class="header" href="#validate"><code>validate</code></a></h3>
+<p>Validate code against thresholds defined in configuration file.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap validate &lt;PATH&gt; [OPTIONS]
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>&lt;PATH&gt;</code> - Path to analyze</li>
+</ul>
+<p><strong>Options:</strong></p>
+<p><em>Configuration &amp; Output:</em></p>
+<ul>
+<li><code>-c, --config &lt;CONFIG&gt;</code> - Configuration file path</li>
+<li><code>-f, --format &lt;FORMAT&gt;</code> - Output format: json, markdown, terminal, dot</li>
+<li><code>-o, --output &lt;OUTPUT&gt;</code> - Output file path (defaults to stdout)</li>
+</ul>
+<p><em>Coverage &amp; Context:</em></p>
+<ul>
+<li><code>--coverage-file &lt;PATH&gt;</code> / <code>--lcov &lt;PATH&gt;</code> - LCOV coverage file for risk analysis</li>
+<li><code>--context</code> / <code>--enable-context</code> - Enable context-aware risk analysis</li>
+<li><code>--context-providers &lt;PROVIDERS&gt;</code> - Context providers to use (comma-separated)</li>
+<li><code>--disable-context &lt;PROVIDERS&gt;</code> - Disable specific context providers</li>
+</ul>
+<p><em>Thresholds &amp; Validation:</em></p>
+<ul>
+<li><code>--max-debt-density &lt;N&gt;</code> - Maximum debt density allowed (per 1000 LOC)</li>
+</ul>
+<p><em>Display Filtering:</em></p>
+<ul>
+<li><code>--top &lt;N&gt;</code> / <code>--head &lt;N&gt;</code> - Show only top N priority items</li>
+<li><code>--tail &lt;N&gt;</code> - Show only bottom N priority items</li>
+<li><code>-s, --summary</code> - Use summary format with tiered priority display</li>
+</ul>
+<p><em>Analysis Control:</em></p>
+<ul>
+<li><code>--semantic-off</code> - Disable semantic analysis (fallback mode)</li>
+</ul>
+<p><em>Performance Control:</em></p>
+<ul>
+<li><code>--no-parallel</code> - Disable parallel call graph construction (enabled by default)</li>
+<li><code>-j, --jobs &lt;N&gt;</code> - Number of threads for parallel processing (0 = use all cores)
+<ul>
+<li>Can also use <code>DEBTMAP_JOBS</code> environment variable</li>
+</ul>
+</li>
+</ul>
+<p><em>Debugging &amp; Verbosity:</em></p>
+<ul>
+<li><code>-v, --verbose</code> - Increase verbosity level (can be repeated: -v, -vv, -vvv)</li>
+</ul>
+<p><strong>Description:</strong>
+Similar to <code>analyze</code> but enforces thresholds defined in configuration file. Returns non-zero exit code if thresholds are exceeded, making it suitable for CI/CD integration.</p>
+<p>The <code>validate</code> command supports a focused subset of <code>analyze</code> options, primarily for output control, coverage integration, context-aware analysis, and display filtering.</p>
+<p><strong>Note:</strong> The following <code>analyze</code> options are NOT available in the <code>validate</code> command:</p>
+<ul>
+<li><code>--threshold-complexity</code>, <code>--threshold-duplication</code>, <code>--threshold-preset</code> (configure these in <code>.debtmap.toml</code> instead)</li>
+<li><code>--languages</code> (language filtering)</li>
+</ul>
+<p>Configure analysis thresholds in your <code>.debtmap.toml</code> configuration file for use with the <code>validate</code> command.</p>
+<p><strong>Exit Codes:</strong></p>
+<ul>
+<li><code>0</code> - Success (no errors, all thresholds passed)</li>
+<li>Non-zero - Failure (errors occurred or thresholds exceeded)</li>
+</ul>
+<h3 id="compare"><a class="header" href="#compare"><code>compare</code></a></h3>
+<p>Compare two analysis results and generate a diff report.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap compare --before &lt;FILE&gt; --after &lt;FILE&gt; [OPTIONS]
+</code></pre>
+<p><strong>Required Options:</strong></p>
+<ul>
+<li><code>--before &lt;FILE&gt;</code> - Path to “before” analysis JSON</li>
+<li><code>--after &lt;FILE&gt;</code> - Path to “after” analysis JSON</li>
+</ul>
+<p><strong>Optional Target Location:</strong></p>
+<ul>
+<li><code>--plan &lt;FILE&gt;</code> - Path to implementation plan (to extract target location)</li>
+<li><code>--target-location &lt;LOCATION&gt;</code> - Target location in format <code>file:function:line</code></li>
+</ul>
+<p><strong>Note:</strong> <code>--plan</code> and <code>--target-location</code> are mutually exclusive options. Using both together will cause a CLI error:</p>
+<pre><code>error: the argument '--plan &lt;FILE&gt;' cannot be used with '--target-location &lt;LOCATION&gt;'
+</code></pre>
+<p>Use one or the other to specify the target location.</p>
+<p><strong>Output Options:</strong></p>
+<ul>
+<li><code>-f, --format &lt;FORMAT&gt;</code> - Output format: json, markdown, terminal, dot (default: json)</li>
+<li><code>-o, --output &lt;OUTPUT&gt;</code> - Output file (defaults to stdout)</li>
+</ul>
+<p><strong>Description:</strong>
+Compares two analysis results and generates a diff showing improvements or regressions in code quality metrics.</p>
+<p>Requires matching analyzer versions and compatible analysis receipts with
+complete scope. Incompatible or unverifiable inputs exit nonzero, explain the
+reason on stderr, and do not emit or overwrite a comparison report. Regenerate
+both reports using the same Debtmap version and settings after an upgrade;
+legacy reports without receipts cannot establish comparable measurements.</p>
+<h3 id="validate-improvement"><a class="header" href="#validate-improvement"><code>validate-improvement</code></a></h3>
+<p>Validate that technical debt improvements meet quality thresholds.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap validate-improvement --comparison &lt;FILE&gt; [OPTIONS]
+</code></pre>
+<p><strong>Required Options:</strong></p>
+<ul>
+<li><code>--comparison &lt;FILE&gt;</code> - Path to comparison JSON file (from <code>debtmap compare</code>)</li>
+</ul>
+<p><strong>Optional Options:</strong></p>
+<ul>
+<li><code>-o, --output &lt;FILE&gt;</code> - Output file path for validation results (default: <code>.prodigy/debtmap-validation.json</code>)</li>
+<li><code>--previous-validation &lt;FILE&gt;</code> - Path to previous validation result for trend tracking</li>
+<li><code>--threshold &lt;N&gt;</code> - Improvement threshold percentage (default: 75.0)</li>
+<li><code>-f, --format &lt;FORMAT&gt;</code> - Output format: json, markdown, terminal, dot (default: json)</li>
+<li><code>--quiet</code> - Suppress console output (useful for automation)</li>
+</ul>
+<p><strong>Description:</strong>
+Validates improvement quality by analyzing comparison output from <code>debtmap compare</code>. Calculates a composite improvement score based on weighted components:</p>
+<p><strong>Composite Score Calculation:</strong></p>
+<ol>
+<li>
+<p><strong>Target Item Improvement (50% weight)</strong> - Measures direct improvement to the specific target item being fixed</p>
+<ul>
+<li>Compares complexity, debt score, and other metrics before/after</li>
+<li>Weight: 0.5 × (target improvement percentage)</li>
+</ul>
+</li>
+<li>
+<p><strong>Overall Project Health (30% weight)</strong> - Evaluates project-wide quality changes</p>
+<ul>
+<li>Analyzes aggregate metrics across entire codebase</li>
+<li>Considers new issues introduced, total debt changes</li>
+<li>Weight: 0.3 × (project health percentage)</li>
+</ul>
+</li>
+<li>
+<p><strong>Absence of Regressions (20% weight)</strong> - Penalizes introduction of new technical debt</p>
+<ul>
+<li>Checks for new high-priority issues in other parts of codebase</li>
+<li>Ensures improvements don’t shift complexity elsewhere</li>
+<li>Weight: 0.2 × (regression-free percentage)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Final Score:</strong> <code>composite_score = (0.5 × target) + (0.3 × health) + (0.2 × no_regressions)</code></p>
+<p>The default threshold (75%) requires strong improvement in the target item while maintaining overall project quality.</p>
+<p>When <code>--previous-validation</code> is provided, tracks progress trends across multiple attempts and provides recommendations for continuing or adjusting the improvement approach.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash"># Basic validation
+debtmap validate-improvement --comparison comparison.json
+
+# With trend tracking and custom threshold
+debtmap validate-improvement \
+  --comparison .prodigy/comparison.json \
+  --previous-validation .prodigy/validation.json \
+  --output .prodigy/validation.json \
+  --threshold 80.0
+</code></pre>
+<h3 id="diagnose-coverage-debugging"><a class="header" href="#diagnose-coverage-debugging"><code>diagnose-coverage</code> (Debugging)</a></h3>
+<p>Diagnose and validate LCOV coverage files.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap diagnose-coverage &lt;COVERAGE_FILE&gt; [OPTIONS]
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>&lt;COVERAGE_FILE&gt;</code> - Path to the LCOV coverage file to diagnose</li>
+</ul>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>--format &lt;FORMAT&gt;</code> - Output format: text or json (default: text)</li>
+</ul>
+<p><strong>Description:</strong>
+Validates and diagnoses LCOV coverage files with detailed analysis. This command helps identify issues with coverage data before using it with the <code>analyze</code> command. Use this when:</p>
+<ul>
+<li>Coverage data seems incorrect or incomplete</li>
+<li>You want to validate an LCOV file before integration</li>
+<li>Debugging coverage parsing issues</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash"># Validate coverage file with text output
+debtmap diagnose-coverage coverage.lcov
+
+# Get JSON output for automation
+debtmap diagnose-coverage lcov.info --format json
+</code></pre>
+<h3 id="explain-coverage-debugging"><a class="header" href="#explain-coverage-debugging"><code>explain-coverage</code> (Debugging)</a></h3>
+<p>Explain coverage detection for a specific function.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">debtmap explain-coverage &lt;PATH&gt; --coverage-file &lt;FILE&gt; --function &lt;NAME&gt; [OPTIONS]
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>&lt;PATH&gt;</code> - Path to the codebase to analyze</li>
+</ul>
+<p><strong>Required Options:</strong></p>
+<ul>
+<li><code>--coverage-file &lt;FILE&gt;</code> / <code>--lcov &lt;FILE&gt;</code> - LCOV coverage file</li>
+<li><code>--function &lt;NAME&gt;</code> - Function name to explain (e.g., “create_auto_commit”)</li>
+</ul>
+<p><strong>Optional Options:</strong></p>
+<ul>
+<li><code>--file &lt;PATH&gt;</code> - File path containing the function (helps narrow search)</li>
+<li><code>-v, --verbose</code> - Show all attempted matching strategies</li>
+<li><code>-f, --format &lt;FORMAT&gt;</code> - Output format: text or json (default: text)</li>
+</ul>
+<p><strong>Description:</strong>
+Debugging tool that explains how coverage detection works for a specific function. Shows all attempted matching strategies and helps diagnose coverage mapping issues. This command is particularly useful when:</p>
+<ul>
+<li>Coverage appears incorrect for specific functions</li>
+<li>You need to understand why a function isn’t matched in coverage data</li>
+<li>Debugging LCOV line mapping issues</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash"># Explain coverage for a specific function
+debtmap explain-coverage src/ --coverage-file coverage.lcov --function "process_file"
+
+# Narrow search to specific file with verbose output
+debtmap explain-coverage . --lcov lcov.info --function "analyze_complexity" --file "src/analyzer.rs" -v
+
+# JSON output for automation
+debtmap explain-coverage . --coverage-file coverage.lcov --function "my_function" --format json
+</code></pre>
+<h2 id="options"><a class="header" href="#options">Options</a></h2>
+<p>Options are organized by category for clarity. Most options apply to the <code>analyze</code> command, with a subset available for <code>validate</code>.</p>
+<h3 id="output-control"><a class="header" href="#output-control">Output Control</a></h3>
+<p>Control how analysis results are formatted and displayed.</p>
+<p><strong>Format Options:</strong></p>
+<ul>
+<li><code>-f, --format &lt;FORMAT&gt;</code> - Output format: json, markdown, terminal, dot (default: terminal for analyze)
+<ul>
+<li><code>json</code> - JSON format for programmatic processing</li>
+<li><code>markdown</code> - Markdown format with comprehensive analysis (uses LLM-optimized writer)</li>
+<li><code>terminal</code> - Human-readable terminal output with colors and formatting</li>
+<li><code>dot</code> - Graphviz DOT format for dependency visualization</li>
+</ul>
+</li>
+<li><code>-o, --output &lt;OUTPUT&gt;</code> - Output file path (defaults to stdout)</li>
+<li><code>--plain</code> - Plain output mode: ASCII-only, no colors, no emoji, machine-parseable</li>
+</ul>
+<p><strong>Display Filtering:</strong></p>
+<ul>
+<li><code>--top &lt;N&gt;</code> / <code>--head &lt;N&gt;</code> - Show only top N priority items</li>
+<li><code>--tail &lt;N&gt;</code> - Show only bottom N priority items (lowest priority)</li>
+<li><code>-s, --summary</code> - Use summary format with tiered priority display (compact output)</li>
+<li><code>-c, --compact</code> - Use compact output format (minimal details, top metrics only). Conflicts with verbosity flags (-v, -vv, -vvv). Only available in <code>analyze</code> command (note: <code>validate</code> uses <code>-c</code> for <code>--config</code>)</li>
+<li><code>--min-priority &lt;PRIORITY&gt;</code> - Minimum priority to display: low, medium, high, critical</li>
+<li><code>--min-score &lt;N&gt;</code> - Minimum score threshold for filtering T3/T4 recommendations (default: 3.0)
+<ul>
+<li>T1 Critical Architecture and T2 Complex Untested items bypass this filter and are always shown</li>
+<li>Overrides config file setting (Spec 193, 205)</li>
+</ul>
+</li>
+<li><code>--show-filter-stats</code> - Show filter statistics (how many items were filtered and why)</li>
+<li><code>--filter &lt;CATEGORIES&gt;</code> - Filter by debt categories (comma-separated)</li>
+<li><code>--aggregate-only</code> - Show only aggregated file-level scores</li>
+</ul>
+<p><strong>Progress Display:</strong></p>
+<ul>
+<li><code>--no-tui</code> - Disable TUI progress visualization (use simple progress bars instead)</li>
+<li><code>-q, --quiet</code> - Suppress progress output (quiet mode)</li>
+</ul>
+<h3 id="analysis-control"><a class="header" href="#analysis-control">Analysis Control</a></h3>
+<p>Configure analysis behavior, thresholds, and language selection.</p>
+<p><strong>Thresholds:</strong></p>
+<ul>
+<li><code>--threshold-complexity &lt;N&gt;</code> - Complexity threshold (default: 10) [analyze command]</li>
+<li><code>--threshold-duplication &lt;N&gt;</code> - Duplication threshold in lines (default: 50) [analyze command]</li>
+<li><code>--threshold-preset &lt;PRESET&gt;</code> - Complexity threshold preset: strict, balanced, lenient [analyze command]
+<ul>
+<li><code>strict</code> - Strict thresholds for high code quality standards</li>
+<li><code>balanced</code> - Balanced thresholds for typical projects (default)</li>
+<li><code>lenient</code> - Lenient thresholds for legacy or complex domains</li>
+</ul>
+</li>
+<li><code>--max-debt-density &lt;N&gt;</code> - Maximum debt density allowed per 1000 LOC [validate command]</li>
+</ul>
+<p><strong>Note:</strong> Threshold options (<code>--threshold-complexity</code>, <code>--threshold-duplication</code>, <code>--threshold-preset</code>) are command-line options for the <code>analyze</code> command. For the <code>validate</code> command, these thresholds are configured via the <code>--config</code> file (<code>.debtmap.toml</code>) rather than as command-line flags.</p>
+<p><strong>Language Selection:</strong></p>
+<ul>
+<li><code>--languages &lt;LANGS&gt;</code> - Comma-separated list of languages to analyze
+<ul>
+<li>Example: <code>--languages rust,python,javascript,typescript,go,solidity</code></li>
+<li>Supported: rust, python, javascript, typescript, go, solidity</li>
+<li>Aliases include common extensions plus <code>golang</code> for Go and <code>sol</code> for Solidity</li>
+</ul>
+</li>
+</ul>
+<p><strong>Analysis Modes:</strong></p>
+<ul>
+<li><code>--semantic-off</code> - Disable semantic analysis (fallback mode)</li>
+<li><code>--no-context-aware</code> - Disable context-aware false positive reduction (enabled by default)</li>
+<li><code>--no-multi-pass</code> - Disable multi-pass analysis (use single-pass for performance)</li>
+<li><code>--attribution</code> - Show complexity attribution details (requires multi-pass, which is the default)</li>
+</ul>
+<p><strong>Functional Programming Analysis:</strong></p>
+<ul>
+<li><code>--ast-functional-analysis</code> - Enable AST-based functional composition analysis (spec 111)
+<ul>
+<li>Analyzes code for functional programming patterns and composition</li>
+<li>Detects pure functions, immutability, and side effects</li>
+</ul>
+</li>
+<li><code>--functional-analysis-profile &lt;PROFILE&gt;</code> - Set functional analysis profile
+<ul>
+<li><code>strict</code> - Strict functional purity requirements (for pure FP codebases)</li>
+<li><code>balanced</code> - Balanced analysis suitable for mixed paradigms (default)</li>
+<li><code>lenient</code> - Lenient thresholds for imperative codebases</li>
+</ul>
+</li>
+</ul>
+<h3 id="context--coverage"><a class="header" href="#context--coverage">Context &amp; Coverage</a></h3>
+<p>Enable context-aware risk analysis and integrate test coverage data.</p>
+<p><strong>Context-Aware Risk Analysis:</strong></p>
+<ul>
+<li><code>--context</code> / <code>--enable-context</code> - Enable context-aware risk analysis</li>
+<li><code>--context-providers &lt;PROVIDERS&gt;</code> - Context providers to use (comma-separated)
+<ul>
+<li>Available: <code>critical_path</code>, <code>dependency</code>, <code>git_history</code></li>
+<li>Example: <code>--context-providers critical_path,git_history</code></li>
+</ul>
+</li>
+<li><code>--disable-context &lt;PROVIDERS&gt;</code> - Disable specific context providers (comma-separated)</li>
+</ul>
+<p><strong>Coverage Integration:</strong></p>
+<ul>
+<li><code>--coverage-file &lt;PATH&gt;</code> / <code>--lcov &lt;PATH&gt;</code> - LCOV coverage file for risk analysis
+<ul>
+<li>Coverage data dampens debt scores for well-tested code (multiplier = 1.0 - coverage)</li>
+<li>Surfaces untested complex functions as higher priority</li>
+<li>Total debt score with coverage ≤ score without coverage</li>
+</ul>
+</li>
+</ul>
+<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<p>Optimize analysis performance through parallelization.</p>
+<p><strong>Parallel Processing:</strong></p>
+<ul>
+<li><code>--no-parallel</code> - Disable parallel call graph construction (enabled by default)</li>
+<li><code>-j, --jobs &lt;N&gt;</code> - Number of threads for parallel processing
+<ul>
+<li><code>0</code> = use all available CPU cores (default)</li>
+<li>Specify number to limit thread count</li>
+</ul>
+</li>
+</ul>
+<p><strong>Other Performance:</strong></p>
+<ul>
+<li><code>--max-files &lt;N&gt;</code> - Maximum number of files to analyze (0 = no limit)</li>
+</ul>
+<p><strong>Profiling:</strong></p>
+<ul>
+<li><code>--profile</code> - Enable profiling to identify performance bottlenecks (Spec 001)
+<ul>
+<li>Outputs timing breakdown for each analysis phase when complete</li>
+</ul>
+</li>
+<li><code>--profile-output &lt;FILE&gt;</code> - Write profiling data to file in JSON format (requires –profile)
+<ul>
+<li>Use for post-analysis performance investigation</li>
+</ul>
+</li>
+</ul>
+<h3 id="debugging--verbosity"><a class="header" href="#debugging--verbosity">Debugging &amp; Verbosity</a></h3>
+<p>Control diagnostic output and debugging information.</p>
+<p><strong>Verbosity Levels:</strong></p>
+<ul>
+<li><code>-v, --verbose</code> - Increase verbosity level (can be repeated: -v, -vv, -vvv)
+<ul>
+<li><code>-v</code> - Show main score factors</li>
+<li><code>-vv</code> - Show detailed calculations</li>
+<li><code>-vvv</code> - Show all debug information</li>
+</ul>
+</li>
+</ul>
+<p><strong>Specialized Debugging:</strong></p>
+<ul>
+<li><code>--explain-metrics</code> - Explain metric definitions and formulas (measured vs estimated)</li>
+<li><code>--verbose-macro-warnings</code> - Show verbose macro parsing warnings (Rust analysis)</li>
+<li><code>--show-macro-stats</code> - Show macro expansion statistics at end of analysis</li>
+</ul>
+<p><strong>Call Graph Debugging:</strong></p>
+<ul>
+<li><code>--debug-call-graph</code> - Enable detailed call graph debugging with resolution information</li>
+<li><code>--trace-function &lt;FUNCTIONS&gt;</code> - Trace specific functions during call resolution (comma-separated)
+<ul>
+<li>Example: <code>--trace-function 'my_function,another_function'</code></li>
+</ul>
+</li>
+<li><code>--call-graph-stats</code> - Show only call graph statistics (no detailed failure list)</li>
+<li><code>--validate-call-graph</code> - Validate call graph structure and report issues</li>
+<li><code>--debug-format &lt;FORMAT&gt;</code> - Debug output format: text or json (default: text)
+<ul>
+<li>Use with call graph debugging flags to control output format</li>
+</ul>
+</li>
+</ul>
+<h3 id="aggregation"><a class="header" href="#aggregation">Aggregation</a></h3>
+<p>Control file-level aggregation and god object detection.</p>
+<p><strong>File Aggregation:</strong></p>
+<ul>
+<li><code>--aggregate-only</code> - Show only aggregated file-level scores</li>
+<li><code>--no-aggregation</code> - Disable file-level aggregation</li>
+<li><code>--aggregation-method &lt;METHOD&gt;</code> - File aggregation method (default: weighted_sum)
+<ul>
+<li>Options: sum, weighted_sum, logarithmic_sum, max_plus_average</li>
+</ul>
+</li>
+<li><code>--min-problematic &lt;N&gt;</code> - Minimum number of problematic functions for file aggregation</li>
+<li><code>--no-god-object</code> - Disable god object detection</li>
+</ul>
+<p><strong>God Object Split Recommendations:</strong></p>
+<ul>
+<li><code>--show-splits</code> - Show detailed module split recommendations for god objects and large files (experimental)
+<ul>
+<li>Suggests how to decompose large files into smaller, focused modules</li>
+</ul>
+</li>
+</ul>
+<h3 id="option-aliases"><a class="header" href="#option-aliases">Option Aliases</a></h3>
+<p>Common option shortcuts and aliases for convenience:</p>
+<ul>
+<li><code>--lcov</code> is alias for <code>--coverage-file</code></li>
+<li><code>--enable-context</code> is alias for <code>--context</code></li>
+<li><code>--head</code> is alias for <code>--top</code></li>
+<li><code>-s</code> is short form for <code>--summary</code></li>
+<li><code>-v</code> is short form for <code>--verbose</code></li>
+<li><code>-f</code> is short form for <code>--format</code></li>
+<li><code>-o</code> is short form for <code>--output</code></li>
+<li><code>-c</code> is short form for <code>--config</code></li>
+<li><code>-j</code> is short form for <code>--jobs</code></li>
+</ul>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<h3 id="configuration-file"><a class="header" href="#configuration-file">Configuration File</a></h3>
+<p>Created via <code>debtmap init</code> command. The configuration file (<code>.debtmap.toml</code>) is used by the <code>validate</code> command for threshold enforcement and default settings.</p>
+<p><strong>Creating Configuration:</strong></p>
+<pre><code class="language-bash"># Create new config
+debtmap init
+
+# Overwrite existing config
+debtmap init --force
+</code></pre>
+<h3 id="environment-variables"><a class="header" href="#environment-variables">Environment Variables</a></h3>
+<ul>
+<li>
+<p><code>DEBTMAP_CONFIG</code> - Custom config file path (same as <code>--config</code> global flag)</p>
+<ul>
+<li>Example: <code>export DEBTMAP_CONFIG=/path/to/debtmap.toml</code></li>
+<li>Layers above user and project configuration files</li>
+<li>Useful for CI/CD environments with centralized config</li>
+<li>Source: src/cli.rs:45</li>
+</ul>
+</li>
+<li>
+<p><code>DEBTMAP_JOBS</code> - Number of threads for parallel processing (same as <code>--jobs</code> / <code>-j</code> flag)</p>
+<ul>
+<li>Example: <code>export DEBTMAP_JOBS=8  # Same as --jobs 8</code></li>
+<li>Use <code>0</code> to utilize all available CPU cores</li>
+<li>Controls thread pool size for parallel call graph construction</li>
+</ul>
+</li>
+<li>
+<p><code>DEBTMAP_SINGLE_PASS</code> - Disable multi-pass analysis globally (same as <code>--no-multi-pass</code> flag)</p>
+<ul>
+<li>Example: <code>export DEBTMAP_SINGLE_PASS=1  # Disable multi-pass analysis</code></li>
+<li>Set to <code>1</code> or <code>true</code> to disable multi-pass analysis by default</li>
+<li>Useful for CI/CD environments where performance is critical</li>
+<li>Can be overridden by command-line flags</li>
+</ul>
+</li>
+<li>
+<p><code>PRODIGY_AUTOMATION</code> - Enable automation mode for <code>validate-improvement</code> command</p>
+<ul>
+<li>Example: <code>export PRODIGY_AUTOMATION=true</code></li>
+<li>Set to <code>true</code> to enable automation mode (suppresses interactive prompts)</li>
+<li>Used in automated workflows for continuous improvement validation</li>
+<li>Source: src/main.rs:549</li>
+</ul>
+</li>
+<li>
+<p><code>PRODIGY_VALIDATION</code> - Alternative flag for automation mode (same effect as <code>PRODIGY_AUTOMATION</code>)</p>
+<ul>
+<li>Example: <code>export PRODIGY_VALIDATION=true</code></li>
+<li>Set to <code>true</code> to enable automation mode</li>
+<li>Provided for backward compatibility with existing workflows</li>
+<li>Source: src/main.rs:552</li>
+</ul>
+</li>
+</ul>
+<h3 id="getting-help"><a class="header" href="#getting-help">Getting Help</a></h3>
+<p>Get help for any command:</p>
+<pre><code class="language-bash"># General help
+debtmap --help
+
+# Command-specific help
+debtmap analyze --help
+debtmap validate --help
+debtmap compare --help
+debtmap init --help
+debtmap config check --help
+</code></pre>
+<h2 id="common-workflows"><a class="header" href="#common-workflows">Common Workflows</a></h2>
+<h3 id="basic-analysis"><a class="header" href="#basic-analysis">Basic Analysis</a></h3>
+<p>Analyze a project and view results in terminal:</p>
+<pre><code class="language-bash">debtmap analyze src/
+</code></pre>
+<p>Generate JSON report for further processing:</p>
+<pre><code class="language-bash">debtmap analyze . --format json --output report.json
+</code></pre>
+<p>Generate Markdown report:</p>
+<pre><code class="language-bash">debtmap analyze . --format markdown --output report.md
+</code></pre>
+<h3 id="coverage-integrated-analysis"><a class="header" href="#coverage-integrated-analysis">Coverage-Integrated Analysis</a></h3>
+<p>Analyze with test coverage to surface untested complex code:</p>
+<pre><code class="language-bash"># Generate coverage file first (example for Rust)
+cargo tarpaulin --out lcov
+
+# Run analysis with coverage
+debtmap analyze src/ --coverage-file lcov.info
+</code></pre>
+<p>Coverage dampens debt scores for well-tested code, making untested complex functions more visible.</p>
+<h3 id="context-aware-analysis"><a class="header" href="#context-aware-analysis">Context-Aware Analysis</a></h3>
+<p>Enable context providers for risk-aware prioritization:</p>
+<pre><code class="language-bash"># Use all context providers
+debtmap analyze . --context
+
+# Use specific context providers
+debtmap analyze . --context --context-providers critical_path,git_history
+</code></pre>
+<p>Context-aware analysis reduces false positives and prioritizes code based on:</p>
+<ul>
+<li>Critical execution paths</li>
+<li>Dependency relationships</li>
+<li>Git history (change frequency)</li>
+</ul>
+<h3 id="filtered--focused-analysis"><a class="header" href="#filtered--focused-analysis">Filtered &amp; Focused Analysis</a></h3>
+<p>Show only top priority items:</p>
+<pre><code class="language-bash">debtmap analyze . --top 10 --min-priority high
+</code></pre>
+<p>Filter by specific debt categories:</p>
+<pre><code class="language-bash">debtmap analyze . --filter complexity,duplication
+</code></pre>
+<p>Use summary mode for compact output:</p>
+<pre><code class="language-bash">debtmap analyze . --summary
+</code></pre>
+<p>Show only file-level aggregations:</p>
+<pre><code class="language-bash">debtmap analyze . --aggregate-only
+</code></pre>
+<h3 id="performance-tuning"><a class="header" href="#performance-tuning">Performance Tuning</a></h3>
+<p>Control parallelization:</p>
+<pre><code class="language-bash"># Use 8 threads
+debtmap analyze . --jobs 8
+
+# Disable parallel processing
+debtmap analyze . --no-parallel
+</code></pre>
+<p>Limit analysis scope:</p>
+<pre><code class="language-bash"># Analyze maximum 100 files
+debtmap analyze . --max-files 100
+
+# Analyze specific languages only
+debtmap analyze . --languages rust,python
+</code></pre>
+<h3 id="cicd-integration"><a class="header" href="#cicd-integration">CI/CD Integration</a></h3>
+<p>Use the <code>validate</code> command in CI/CD pipelines:</p>
+<pre><code class="language-bash"># Initialize configuration (one time)
+debtmap init
+
+# Edit debtmap.toml to set thresholds
+# ...
+
+# In CI pipeline: validate against thresholds
+debtmap validate . --config debtmap.toml --max-debt-density 50
+</code></pre>
+<p>The <code>validate</code> command returns non-zero exit code if thresholds are exceeded, failing the build.</p>
+<h3 id="comparison--tracking"><a class="header" href="#comparison--tracking">Comparison &amp; Tracking</a></h3>
+<p>Compare analysis results before and after changes:</p>
+<pre><code class="language-bash"># Before changes
+debtmap analyze . --format json --output before.json
+
+# Make code changes...
+
+# After changes
+debtmap analyze . --format json --output after.json
+
+# Generate comparison report
+debtmap compare --before before.json --after after.json --format markdown
+</code></pre>
+<p>With implementation plan:</p>
+<pre><code class="language-bash">debtmap compare --before before.json --after after.json --plan IMPLEMENTATION_PLAN.md
+</code></pre>
+<h3 id="debugging-analysis"><a class="header" href="#debugging-analysis">Debugging Analysis</a></h3>
+<p>Increase verbosity to understand scoring:</p>
+<pre><code class="language-bash"># Show main score factors
+debtmap analyze src/ -v
+
+# Show detailed calculations
+debtmap analyze src/ -vv
+
+# Show all debug information
+debtmap analyze src/ -vvv
+</code></pre>
+<p>Debug call graph resolution issues:</p>
+<pre><code class="language-bash"># Enable call graph debugging
+debtmap analyze . --debug-call-graph
+
+# Trace specific functions
+debtmap analyze . --debug-call-graph --trace-function 'problematic_function'
+
+# Validate call graph structure
+debtmap analyze . --validate-call-graph --debug-format json
+</code></pre>
+<p>Show macro expansion statistics (Rust):</p>
+<pre><code class="language-bash">debtmap analyze . --show-macro-stats --verbose-macro-warnings
+</code></pre>
+<p>Analyze functional programming patterns:</p>
+<pre><code class="language-bash"># Enable functional analysis
+debtmap analyze . --ast-functional-analysis
+
+# Use strict profile for pure FP codebases
+debtmap analyze . --ast-functional-analysis --functional-analysis-profile strict
+</code></pre>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-analysis-1"><a class="header" href="#basic-analysis-1">Basic Analysis</a></h3>
+<pre><code class="language-bash"># Analyze current directory
+debtmap analyze .
+
+# Analyze specific directory
+debtmap analyze src/
+
+# Generate JSON output
+debtmap analyze . --format json --output report.json
+</code></pre>
+<h3 id="with-coverage"><a class="header" href="#with-coverage">With Coverage</a></h3>
+<pre><code class="language-bash"># Analyze with LCOV coverage file
+debtmap analyze src/ --coverage-file coverage.lcov
+
+# Alternative alias
+debtmap analyze src/ --lcov coverage.lcov
+</code></pre>
+<h3 id="context-aware-analysis-1"><a class="header" href="#context-aware-analysis-1">Context-Aware Analysis</a></h3>
+<pre><code class="language-bash"># Enable all context providers
+debtmap analyze . --context
+
+# Use specific context providers
+debtmap analyze . --context --context-providers critical_path,git_history
+
+# Disable specific providers
+debtmap analyze . --context --disable-context dependency
+</code></pre>
+<h3 id="filtered-output"><a class="header" href="#filtered-output">Filtered Output</a></h3>
+<pre><code class="language-bash"># Top 10 priority items only
+debtmap analyze . --top 10
+
+# High priority and above
+debtmap analyze . --min-priority high
+
+# Specific categories
+debtmap analyze . --filter complexity,duplication
+
+# Summary format
+debtmap analyze . --summary
+
+</code></pre>
+<h3 id="performance-tuning-1"><a class="header" href="#performance-tuning-1">Performance Tuning</a></h3>
+<pre><code class="language-bash"># Use 8 threads
+debtmap analyze . --jobs 8
+
+# Disable parallelization
+debtmap analyze . --no-parallel
+
+# Limit file count
+debtmap analyze . --max-files 100
+</code></pre>
+<h3 id="validation"><a class="header" href="#validation">Validation</a></h3>
+<pre><code class="language-bash"># Initialize config
+debtmap init --force
+
+# Validate against config
+debtmap validate . --config debtmap.toml
+
+# With max debt density threshold
+debtmap validate . --max-debt-density 50
+</code></pre>
+<h3 id="comparison"><a class="header" href="#comparison">Comparison</a></h3>
+<pre><code class="language-bash"># Compare two analyses
+debtmap compare --before before.json --after after.json
+
+# With markdown output
+debtmap compare --before before.json --after after.json --format markdown
+
+# With implementation plan
+debtmap compare --before before.json --after after.json --plan IMPLEMENTATION_PLAN.md
+
+# With target location
+debtmap compare --before before.json --after after.json --target-location "src/main.rs:process_file:42"
+</code></pre>
+<h3 id="language-selection"><a class="header" href="#language-selection">Language Selection</a></h3>
+<pre><code class="language-bash"># Analyze only Rust files
+debtmap analyze . --languages rust
+
+# Multiple languages
+debtmap analyze . --languages rust,python,javascript
+</code></pre>
+<h3 id="threshold-configuration"><a class="header" href="#threshold-configuration">Threshold Configuration</a></h3>
+<pre><code class="language-bash"># Custom complexity threshold
+debtmap analyze . --threshold-complexity 15
+
+# Use preset
+debtmap analyze . --threshold-preset strict
+
+# Custom duplication threshold
+debtmap analyze . --threshold-duplication 100
+</code></pre>
+<h3 id="plainmachine-readable-output"><a class="header" href="#plainmachine-readable-output">Plain/Machine-Readable Output</a></h3>
+<pre><code class="language-bash"># Plain output (no colors, no emoji)
+debtmap analyze . --plain
+
+# Combine with JSON for CI
+debtmap analyze . --format json --plain --output report.json
+</code></pre>
+<h3 id="advanced-debugging"><a class="header" href="#advanced-debugging">Advanced Debugging</a></h3>
+<pre><code class="language-bash"># Call graph debugging with detailed information
+debtmap analyze . --debug-call-graph --debug-format json
+
+# Trace specific functions during call resolution
+debtmap analyze . --debug-call-graph --trace-function 'process_file,analyze_complexity'
+
+# Validate call graph structure
+debtmap analyze . --validate-call-graph
+
+# Show only call graph statistics
+debtmap analyze . --debug-call-graph --call-graph-stats
+
+# Functional programming analysis with strict profile
+debtmap analyze . --ast-functional-analysis --functional-analysis-profile strict
+
+# Explain metric definitions
+debtmap analyze . --explain-metrics -v
+</code></pre>
+<h2 id="command-compatibility-matrix"><a class="header" href="#command-compatibility-matrix">Command Compatibility Matrix</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Option</th><th>analyze</th><th>validate</th><th>compare</th><th>init</th><th>diagnose-coverage</th><th>explain-coverage</th></tr>
+</thead>
+<tbody>
+<tr><td><code>&lt;PATH&gt;</code> argument</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✓</td><td>✓</td></tr>
+<tr><td><code>--format</code></td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✓</td></tr>
+<tr><td><code>--output</code></td><td>✓</td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--coverage-file</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td><code>--context</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--threshold-*</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--top / --tail</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--min-score</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--show-filter-stats</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--quiet</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--no-tui</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--jobs</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--no-parallel</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--profile</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--profile-output</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--verbose</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td><code>--show-splits</code></td><td>✓</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--explain-metrics</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--debug-call-graph</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--trace-function</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--call-graph-stats</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--validate-call-graph</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--debug-format</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--ast-functional-analysis</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--functional-analysis-profile</code></td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--function</code></td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td><code>--file</code></td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✓</td></tr>
+<tr><td><code>--config</code></td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--before / --after</code></td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
+<tr><td><code>--force</code></td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td><td>✗</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Note:</strong> The <code>validate</code> command supports output control (<code>--format</code>, <code>--output</code>), coverage integration (<code>--coverage-file</code>), context-aware analysis (<code>--context</code>), display filtering (<code>--top</code>, <code>--tail</code>, <code>--summary</code>, <code>--show-splits</code>), performance control (<code>--jobs</code>, <code>--no-parallel</code>), and verbosity options (<code>--verbose</code>) from the <code>analyze</code> command. Analysis thresholds (<code>--threshold-complexity</code>, <code>--threshold-duplication</code>, <code>--threshold-preset</code>) are configured via the <code>--config</code> file rather than as command-line options. Debugging features like call graph debugging, functional analysis, profiling, and pattern detection are specific to the <code>analyze</code> command. The <code>diagnose-coverage</code> and <code>explain-coverage</code> commands are specialized debugging tools for diagnosing coverage issues and have their own unique options.</p>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="performance-issues"><a class="header" href="#performance-issues">Performance Issues</a></h3>
+<p><strong>Problem:</strong> Analysis is slow on large codebases</p>
+<p><strong>Solutions:</strong></p>
+<pre><code class="language-bash"># Use more threads (if you have CPU cores available)
+debtmap analyze . --jobs 16
+
+# Limit analysis scope
+debtmap analyze . --max-files 500 --languages rust
+</code></pre>
+<h3 id="memory-issues"><a class="header" href="#memory-issues">Memory Issues</a></h3>
+<p><strong>Problem:</strong> Analysis runs out of memory</p>
+<p><strong>Solutions:</strong></p>
+<pre><code class="language-bash"># Disable parallelization
+debtmap analyze . --no-parallel
+
+# Limit file count
+debtmap analyze . --max-files 100
+
+# Analyze in batches by language
+debtmap analyze . --languages rust
+debtmap analyze . --languages python
+</code></pre>
+<h3 id="output-issues"><a class="header" href="#output-issues">Output Issues</a></h3>
+<p><strong>Problem:</strong> Terminal output has garbled characters</p>
+<p><strong>Solution:</strong></p>
+<pre><code class="language-bash"># Use plain mode
+debtmap analyze . --plain
+</code></pre>
+<p><strong>Problem:</strong> Want machine-readable output</p>
+<p><strong>Solution:</strong></p>
+<pre><code class="language-bash"># Use JSON with plain mode
+debtmap analyze . --format json --plain --output report.json
+</code></pre>
+<h3 id="threshold-issues"><a class="header" href="#threshold-issues">Threshold Issues</a></h3>
+<p><strong>Problem:</strong> Too many items flagged</p>
+<p><strong>Solutions:</strong></p>
+<pre><code class="language-bash"># Use lenient preset
+debtmap analyze . --threshold-preset lenient
+
+# Increase threshold
+debtmap analyze . --threshold-complexity 20
+
+# Filter to high priority only
+debtmap analyze . --min-priority high
+</code></pre>
+<p><strong>Problem:</strong> Not enough items flagged</p>
+<p><strong>Solutions:</strong></p>
+<pre><code class="language-bash"># Use strict preset
+debtmap analyze . --threshold-preset strict
+
+# Lower threshold
+debtmap analyze . --threshold-complexity 5
+
+# Show all items
+debtmap analyze . --min-priority low
+</code></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="regular-analysis"><a class="header" href="#regular-analysis">Regular Analysis</a></h3>
+<p>Run analysis regularly to track code quality trends:</p>
+<pre><code class="language-bash"># Daily in CI
+debtmap validate . --config debtmap.toml
+
+# Weekly deep analysis with coverage
+debtmap analyze . --coverage-file coverage.lcov --format json --output weekly-report.json
+</code></pre>
+<h3 id="performance-optimization"><a class="header" href="#performance-optimization">Performance Optimization</a></h3>
+<p>For large codebases:</p>
+<pre><code class="language-bash"># Use maximum parallelization
+debtmap analyze . --jobs 0  # 0 = all cores
+
+# Focus on changed files in CI
+# (implement via custom scripts to analyze git diff)
+</code></pre>
+<h3 id="integration-with-coverage"><a class="header" href="#integration-with-coverage">Integration with Coverage</a></h3>
+<p>Always analyze with coverage when available:</p>
+<pre><code class="language-bash"># Rust example
+cargo tarpaulin --out lcov
+debtmap analyze src/ --coverage-file lcov.info
+
+# Python example
+pytest --cov --cov-report=lcov
+debtmap analyze . --coverage-file coverage.lcov
+</code></pre>
+<p>Coverage integration helps prioritize untested complex code.</p>
+<h2 id="additional-tools"><a class="header" href="#additional-tools">Additional Tools</a></h2>
+<h3 id="prodigy-validate-debtmap-improvement"><a class="header" href="#prodigy-validate-debtmap-improvement">prodigy-validate-debtmap-improvement</a></h3>
+<p>Specialized validation tool for Prodigy workflow integration.</p>
+<p><strong>Description:</strong>
+This binary is part of the Prodigy workflow system and provides specialized validation for Debtmap improvement workflows.</p>
+<p><strong>Usage:</strong>
+See Prodigy documentation for detailed usage instructions.</p>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li><a href="./configuration.html">Configuration Format</a> - Detailed configuration file format</li>
+<li><a href="./output-formats.html">Output Formats</a> - Understanding JSON, Markdown, and Terminal output</li>
+<li><a href="./coverage-integration.html">Coverage Integration</a> - Integrating test coverage data</li>
+<li><a href="./context-providers.html">Context Providers</a> - Understanding context-aware analysis</li>
+<li><a href="./examples.html">Examples</a> - More comprehensive usage examples</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="llm-integration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="analysis-guide/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="llm-integration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="analysis-guide/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

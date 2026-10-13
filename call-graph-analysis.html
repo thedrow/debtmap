@@ -1,0 +1,636 @@
+<!DOCTYPE HTML>
+<html lang="en" class="rust sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Call Graph Analysis - Debtmap Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive guide to Debtmap code complexity and technical debt analyzer">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "rust";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-dedc95d2.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-94861fa4.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('rust')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Debtmap Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/iepathos/debtmap" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="call-graph-analysis"><a class="header" href="#call-graph-analysis">Call Graph Analysis</a></h1>
+<p>Debtmap constructs call graphs to track function relationships and dependencies across your codebase. This supports dependency analysis, circular dependency detection, and transitive coverage propagation.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Call graph analysis builds a comprehensive map of which functions call which other functions. This information powers several key features:</p>
+<ul>
+<li><strong>Dependency analysis</strong> - Find functions with many direct callers or callees</li>
+<li><strong>Circular dependency detection</strong> - Identify problematic circular call patterns</li>
+<li><strong>Transitive coverage</strong> - Propagate test coverage through the call graph</li>
+<li><strong>Dependency visualization</strong> - See caller/callee relationships in output</li>
+<li><strong>Risk assessment</strong> - Factor calling patterns into priority scoring</li>
+</ul>
+<h3 id="immediate-dependency-metrics"><a class="header" href="#immediate-dependency-metrics">Immediate dependency metrics</a></h3>
+<p>Recursive calls remain in the graph, but a function does not count itself as an
+external caller or callee. Immediate neighborhood size counts distinct neighboring
+definitions across both directions: a mutually recursive neighbor counts once.
+Definitions are distinguished by their source identities before display names are
+formatted. Colliding display labels include source locations.</p>
+<p>Public JSON v3 retains the field names <code>blast_radius</code> and
+<code>production_blast_radius</code>. They report immediate neighborhood counts, not
+transitive impact. The production count unions production callers with direct
+callees. Historical records containing only display labels cannot recover exact
+definition identities; their fallback count deduplicates available labels and
+retains any unlabeled counts.</p>
+<p>Dependency degree alone does not establish a critical execution path and does
+not set <code>critical_path</code>. Human output reports factual neighbor counts without
+assigning impact severity from those counts.</p>
+<h2 id="call-graph-construction"><a class="header" href="#call-graph-construction">Call Graph Construction</a></h2>
+<p>For Rust, Debtmap builds an immutable declaration index over all discovered
+source files before analyzing function bodies. Source readers capture each file once;
+both parsing passes use that snapshot:</p>
+<ol>
+<li><strong>Index declarations</strong> — Parse batches of at most 200 files and retain owned
+type syntax, aliases, fields, imports, callable signatures, receiver forms, module
+relationships, and definition locations. Finalize the index after every batch
+has contributed declarations; it contains no ASTs or spans.</li>
+<li><strong>Collect source facts</strong> — Reparse bounded batches against the complete index,
+tracking lexical bindings and supported receiver types. Drop each batch before
+resetting span storage. File ordering and batch boundaries do not restrict lookup.</li>
+<li><strong>Record outcomes</strong> — Add an ordinary edge when declaration evidence justifies a
+target; otherwise preserve the call and its admissible possible targets separately.</li>
+</ol>
+<p>The standard <code>analyze</code> command also uses this resolver when its graph is built from
+cached extraction data. Rust extraction retains a source snapshot so that the complete
+declaration index can be reconstructed before resolving bodies. Older cache records
+without source snapshots preserve uncertain method calls instead of recovering edges
+through name-only matching. Public JSON output does not expose the internal snapshot.
+Rust extraction, metrics, and cached graphs use the same module-qualified function
+names, including multiple inline modules on one source line. Current extraction
+records support Postcard round trips with present or absent source snapshots; this
+does not provide migration for older binary cache layouts.
+Keeping these snapshots costs source-sized storage. Graph construction parses each
+snapshot twice, once for owned declarations and once for body analysis; it avoids
+retaining an entire workspace AST or parsing separately for each function. Resolution totals are available in existing debug logs with
+<code>RUST_LOG=debtmap=debug</code>.</p>
+<p>Git-history context retains qualified names as cache keys and searches the source
+declaration spelling, such as <code>fn run</code> for <code>Worker::run</code>. A completed history preload
+also remembers missing results, allowing cached file-history fallback without
+repeating the repository scan during scoring. This history search remains based on
+textual occurrences; it does not distinguish same-named historical declarations
+within one file. Function-scoring progress advances as metrics finish.</p>
+<p>Definition identity includes its file, name, line, and optional zero-based identifier
+column. Rust extraction and metric adapters populate the same columns, distinguishing
+same-line implementations without changing display names. Older JSON records default
+missing columns to absent; a legacy lookup selects a definition only when unique.
+Type identity additionally preserves its lexical module. Printed
+names are display values. A dotted call cannot select a free function or an
+associated function without a receiver. Known receiver constraints remain in force
+through import lookup and fallback handling: <code>Timeline</code> never matches <code>PyTimeline</code>
+merely because their names have a common suffix. A unique method name alone does
+not establish a resolved edge.</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Example: Debtmap tracks these relationships
+fn process_data(input: &amp;str) -&gt; Result&lt;Data&gt; {
+    validate_input(input)?;  // Call edge: process_data -&gt; validate_input
+    parse_data(input)        // Call edge: process_data -&gt; parse_data
+}
+
+fn validate_input(input: &amp;str) -&gt; Result&lt;()&gt; {
+    // Call graph tracks this function as a callee
+    Ok(())
+}
+<span class="boring">}</span></code></pre>
+<p><strong>Source</strong>: Example pattern from tests/call_graph_comprehensive_test.rs:48-94</p>
+<h3 id="resolution-mechanisms"><a class="header" href="#resolution-mechanisms">Resolution Mechanisms</a></h3>
+<p>The bounded Rust resolver supports:</p>
+<ul>
+<li>Parameters, <code>self</code>/<code>Self</code>, annotated and inferred locals, local aliases,
+references, dereferences of known references, and parentheses.</li>
+<li>Struct literals, declared unit structs, tuple-struct constructors with matching
+arity, named and tuple fields, and known
+function/method return chains. Local async declarations propagate their output
+through <code>.await</code>.</li>
+<li>Explicit module paths and imports when the discovered source establishes one
+declaration identity. Type import aliases retain declaration identities. Module <code>#[path]</code> attributes normalize <code>.</code>
+and <code>..</code> for lookup while preserving the discovered file’s identity. Absolute
+external paths such as <code>::std</code> do not select similarly named local modules. Local
+declarations and explicit imports shadow globs in the relevant namespace; conflicts
+retain admissible owner constraints rather than selecting one declaration.</li>
+<li>Constants and statics use their declared value types. Enums and type aliases
+do not establish unit-struct values merely by sharing a name.</li>
+<li>Direct generic substitution from explicit arguments and known receiver arguments
+into fields and return types. Lifetimes do not become part of a type name; const
+arguments are retained without evaluation. A declared <code>new() -&gt; Other</code> returns
+<code>Other</code>, irrespective of its constructor-like name.</li>
+<li>Inherent methods and concrete trait implementations whose owner, trait scope,
+and requirements are established. Explicit trait qualification distinguishes
+competing implementation bodies from trait declarations and retains the enclosing
+impl’s <code>Self</code> substitution. Dynamic and generic trait bounds retain declaration
+identities from their original lexical context through fields, aliases, returns,
+and substitutions. Unavailable bounds retain that context and diagnostic reason.</li>
+<li>Primitive receiver identities, references, aliases, and lexical type shadowing.
+A primitive receiver excludes incompatible nominal owners; explicit qualification
+may resolve a local trait implementation. Dotted primitive calls remain uncertain
+because library inherent-method precedence is not indexed.</li>
+</ul>
+<p>Bindings follow lexical scope. An initializer sees the previous binding; an
+unknown inner binding shadows an outer known binding. Unsupported pattern bindings
+introduce unknown facts. Assignments update inferred types or preserve explicit
+constraints with uncertainty; branch joins require agreement. Loops conservatively
+invalidate inferred facts they modify. Conditions carry distinct successful and
+unsuccessful binding states through <code>&amp;&amp;</code>, <code>||</code>, <code>if</code>, and <code>while</code>, so successful
+let-chain bindings reach their branch. Block items have separate type and value
+shadows with block-wide item scope.
+Tuple annotations retain each component’s declared owner when initializer facts
+are unavailable. A contradictory component remains constrained uncertainty without
+making unrelated owners possible or invalidating an agreeing sibling.</p>
+<p>Project declarations named <code>clone</code>, <code>get</code>, or <code>any</code> receive the same receiver
+checks as other methods. Their names alone do not establish library ownership.
+Existing supported macro argument scanning, function-pointer tracking, and framework
+registrations remain separate inputs to graph construction. Trait enhancement
+consumes shared call uncertainty and cannot recreate ordinary method edges through
+weaker name matching. Sequential, parallel, and cached-source builders accumulate
+enhancement metadata across batches and finalize it once against existing canonical
+definitions. Unmatched legacy metadata remains diagnostic; it creates no ghost node.
+Public <code>RustCallGraphBuilder::build()</code> also finalizes collected enhancement. Explicit
+finalization followed by <code>build()</code> performs one pass; collecting more metadata
+requires another pass without duplicating Visit patterns. The effects entry point
+seeds canonical definitions from its supplied AST before applying enhancement.</p>
+<h3 id="possible-calls-and-dead-code"><a class="header" href="#possible-calls-and-dead-code">Possible Calls and Dead Code</a></h3>
+<p><code>CallGraph</code> retains uncertain calls with caller and call-site identity, lexical
+module, query, available receiver information, sorted deduplicated candidate
+identities, and a reason. Reasons distinguish unknown receivers, ambiguous
+identities, unsupported type operations, unavailable definitions, and analysis
+limits. Zero-candidate calls remain available for diagnostics. Repeated merges
+preserve distinct sites and do not duplicate identical records.
+Legacy extraction summaries without columns carry a separate occurrence ordinal,
+so repeated calls on one line remain distinct without fabricated source positions.
+Loading legacy graph records deduplicates edges and evidence and rebuilds indexes.
+Sequential and parallel conversions also retain legacy entry-point and test flags.</p>
+<p>Ordinary <code>get_callers</code> and <code>get_callees</code> queries return resolved relationships.
+Possible targets do not increase caller/dependency counts or propagate coverage,
+purity, or ordinary graph scores. Internal consumers can use <code>uncertain_calls</code>,
+<code>get_possible_callers</code>, <code>get_possible_callees</code>, and
+<code>get_transitive_possible_callees</code> to inspect uncertainty explicitly.</p>
+<p>The caller-based dead-code classifier withholds <code>DeadCode</code> when an admissible
+possible caller exists. Enhanced reachability analysis follows both resolved and
+possible relations from its existing live roots, protecting reachable descendants.
+An uncertain call in unreachable code does not become a new root. Definitely-live
+queries retain their existing resolved semantics. Zero-candidate calls cannot
+protect unrelated functions; missing project targets remain a limitation of
+syntax-based dead-code analysis.</p>
+<h3 id="accuracy-limits"><a class="header" href="#accuracy-limits">Accuracy Limits</a></h3>
+<p>This is a bounded source resolver, not Rust’s type checker. Dynamic dispatch and
+unresolved generic trait receivers retain possible implementation targets.
+Trait paths with generic or associated arguments and reference-owned trait impls
+remain uncertain. Trait declarations without bodies are not graph nodes; default
+trait bodies are not instantiated for concrete impls that omit an override. Nested
+glob reexports are unsupported. An explicitly qualified or imported unavailable
+receiver excludes unrelated project methods; a bare unavailable receiver may retain
+a possible target found only by method name. Custom
+<code>Deref</code>, blanket-impl solving, associated-type projection, arbitrary coercions,
+general <code>?</code>/wrapper inference, and const-generic evaluation remain unsupported.
+Block-local item declarations and imports are not indexed as independent lexical
+module contexts; calls requiring those contexts remain uncertain. Receiver checks
+respect those block-local shadows in qualified types and trait bounds inside
+<code>dyn T</code>, excluding unrelated module-level targets. Reference projection preserves
+these constraints; associated-call owner and trait arguments use the same lexical
+type lowering. Alias bodies, fields and returns retain their declaration context.
+Generic arguments
+are not inferred from arbitrary argument constraints, including tuple-constructor
+arguments. Constructors supply a nominal type without manufacturing a callable node.
+Value lookup considers functions, constructors and constants together, so mixed
+glob bindings remain ambiguous even when only one has a callable body. Renamed
+free-function imports retain their resolved declaration identity.
+Loop analysis does not compute a fixed point. Alias and substitution
+expansion stops at 32 levels; recursive aliases and other incomplete facts remain
+uncertain instead of triggering a name-only guess.</p>
+<p>Existing source discovery remains authoritative. The resolver does not invoke
+Cargo project builds or metadata, download dependencies, execute build scripts, or
+introduce general macro expansion. It does not use rust-analyzer. Ambiguous crate,
+module, or configuration contexts may remain unresolved; filenames alone do not
+establish cross-crate ownership.</p>
+<p>These internal graph changes do not add fields to public JSON v3 output. Internal
+serialized graphs in self-describing formats such as JSON preserve uncertainty and
+evidence; older JSON graphs load with empty uncertainty. The existing graph serializer
+does not support a postcard round trip, so binary-format compatibility is not claimed.
+Caller counts and debt rankings can change as incorrect edges are removed or supported
+calls are recovered.</p>
+<p>The labeled regression corpus is in <code>tests/data/rust_method_resolution/</code>. Its
+exact-edge precision and recall describe those fixtures only, not arbitrary Rust
+projects. The additional identity, receiver, lexical, and workspace-boundary regression
+targets cover the nine reviewed gaps, including exact possible-target sets and
+199/200/201/401-file workspaces. The existing Criterion call-graph benchmark measures
+sequential and parallel Rust workspace construction at those boundaries:</p>
+<pre><code class="language-bash">cargo bench --offline --profile dev --bench call_graph_bench -- rust_workspace_resolution
+</code></pre>
+<p>The <a href="../../docs/benchmarks/rust-resolution-nine-gaps.html">measured repair report</a>
+records five warmed debug runs on identical frozen repository and synthetic inputs,
+including context/LCOV, phase timings, peak memory, and the full CLI commands with
+the interactive explorer disabled. Fixture and boundary benchmarks do not establish
+repository-scale performance.</p>
+<p>The <a href="../../docs/rust-resolution-gap-test-matrix.html">systematic gap matrix</a> adds
+451 identity, expression and namespace cases, plus independent compiler
+classifications and harness rejection checks. These targets run in
+<code>just test-integration</code>; the selected fast <code>just test</code> suite alone does not run
+them. The <a href="../../docs/benchmarks/rust-resolution-gap-repairs.html">follow-up performance report</a>
+records the comparison against the committed matrix baseline.</p>
+<h3 id="parallel-construction"><a class="header" href="#parallel-construction">Parallel Construction</a></h3>
+<p>Sequential and parallel Rust builders use the same complete workspace resolution.
+Parallel conversion preserves resolved edge evidence, node role evidence, and
+uncertain calls. Call graph construction runs in parallel by default for improved performance. You can disable parallel processing with <code>--no-parallel</code> for debugging purposes, though this affects overall analysis performance, not just call graph construction.</p>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<p>Call graph behavior is controlled through two configuration sections:</p>
+<h3 id="analysis-settings"><a class="header" href="#analysis-settings">Analysis Settings</a></h3>
+<p>Configure advanced analysis features in the <code>[analysis]</code> section:</p>
+<pre><code class="language-toml">[analysis]
+# Enable trait method resolution (default: depends on context)
+enable_trait_analysis = true
+
+# Enable function pointer and closure tracking (default: depends on context)
+enable_function_pointer_tracking = true
+
+# Enable framework pattern detection for tests and handlers (default: depends on context)
+enable_framework_patterns = true
+
+# Enable cross-module dependency analysis (default: depends on context)
+enable_cross_module_analysis = true
+
+# Maximum depth for transitive analysis (optional)
+max_analysis_depth = 10
+</code></pre>
+<p><strong>Source</strong>: Configuration fields from src/config/core.rs:159-175 (AnalysisSettings)</p>
+<h3 id="callercallee-display-settings"><a class="header" href="#callercallee-display-settings">Caller/Callee Display Settings</a></h3>
+<p>Configure how dependencies are displayed in the <code>[classification.caller_callee]</code> section:</p>
+<pre><code class="language-toml">[classification.caller_callee]
+# Maximum number of callers to display per function (default: 5)
+max_callers = 5
+
+# Maximum number of callees to display per function (default: 5)
+max_callees = 5
+
+# Show external crate calls in dependencies (default: false)
+show_external = false
+
+# Show standard library calls in dependencies (default: false)
+show_std_lib = false
+</code></pre>
+<p><strong>Source</strong>: Configuration fields from src/config/classification.rs:5-50 (CallerCalleeConfig)</p>
+<h2 id="cli-reference"><a class="header" href="#cli-reference">CLI Reference</a></h2>
+<h3 id="analysis-control-flags"><a class="header" href="#analysis-control-flags">Analysis Control Flags</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--no-parallel</code></td><td>false</td><td>Disable parallel processing (enabled by default)</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="debug-and-validation-flags"><a class="header" href="#debug-and-validation-flags">Debug and Validation Flags</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--debug-call-graph</code></td><td>false</td><td>Enable detailed call graph debugging output</td></tr>
+<tr><td><code>--validate-call-graph</code></td><td>false</td><td>Validate call graph structure and report issues</td></tr>
+<tr><td><code>--call-graph-stats</code></td><td>false</td><td>Show call graph statistics with resolution percentiles (p50, p95, p99)</td></tr>
+<tr><td><code>--trace-function &lt;NAMES&gt;</code></td><td>none</td><td>Trace specific functions during call resolution (comma-separated)</td></tr>
+<tr><td><code>--debug-format &lt;FORMAT&gt;</code></td><td>text</td><td>Debug output format (text or json)</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Source</strong>: CLI flags from src/cli/args.rs:341-350</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<h3 id="basic-call-graph-analysis"><a class="header" href="#basic-call-graph-analysis">Basic Call Graph Analysis</a></h3>
+<pre><code class="language-bash"># Analyze with call graph enabled (default)
+debtmap analyze .
+
+# Show call graph statistics
+debtmap analyze . --call-graph-stats
+</code></pre>
+<h3 id="inspecting-call-resolution"><a class="header" href="#inspecting-call-resolution">Inspecting Call Resolution</a></h3>
+<p>Use <code>--debug-call-graph</code> for detailed resolver output and <code>--trace-function &lt;NAME&gt;</code> to follow specific functions through call resolution.</p>
+<p><strong>Source</strong>: Filtering logic from src/priority/formatter/dependencies.rs:filter_dependencies</p>
+<h3 id="debugging-call-resolution"><a class="header" href="#debugging-call-resolution">Debugging Call Resolution</a></h3>
+<pre><code class="language-bash"># Enable detailed call graph debugging
+debtmap analyze . --debug-call-graph
+
+# Trace specific functions during resolution
+debtmap analyze . --trace-function "process_data,validate_input"
+
+# Show call graph statistics with percentiles
+debtmap analyze . --call-graph-stats
+
+# Validate call graph structure
+debtmap analyze . --validate-call-graph
+
+# Disable parallel processing for debugging
+debtmap analyze . --no-parallel
+</code></pre>
+<h3 id="debug-output-format"><a class="header" href="#debug-output-format">Debug Output Format</a></h3>
+<p>Debug output includes:</p>
+<ul>
+<li><strong>Resolution statistics</strong> - Success rates with percentiles (p50, p95, p99)</li>
+<li><strong>Timing information</strong> - Performance metrics for each resolution phase</li>
+<li><strong>Function tracing</strong> - Detailed resolution attempts for specified functions</li>
+<li><strong>Unresolved calls</strong> - Calls that couldn’t be matched to definitions</li>
+</ul>
+<p>Macro expansion statistics show classification breakdown (collection macros, formatting macros, assertion macros, logging macros).</p>
+<p><strong>Source</strong>: Debug capabilities from src/analyzers/call_graph/debug.rs (DebugConfig, ResolutionStatistics)</p>
+<h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
+<p>Call graph information appears in output using Unicode tree-style rendering:</p>
+<pre><code>├─ DEPENDENCIES:
+│  ├─ Called by (2):
+│  │     * main
+│  │     * handle_request
+│  │     ... (showing 2 of 2)
+│  ├─ Calls (3):
+│       * validate_input
+│       * parse_data
+│       * transform
+│       ... (showing 3 of 5)
+</code></pre>
+<p><strong>Source</strong>: Tree-style rendering from src/priority/formatter/sections.rs:240-329</p>
+<h3 id="path-simplification"><a class="header" href="#path-simplification">Path Simplification</a></h3>
+<p>Long paths are simplified for readability:</p>
+<ul>
+<li>Short names: unchanged (e.g., <code>my_function</code>)</li>
+<li>Two-segment paths: unchanged (e.g., <code>helper::read_file</code>)</li>
+<li>Long paths: simplified to last two segments (e.g., <code>crate::utils::io::helper::read_file</code> → <code>helper::read_file</code>)</li>
+</ul>
+<h3 id="empty-states"><a class="header" href="#empty-states">Empty States</a></h3>
+<ul>
+<li><strong>No callers</strong>: “Called by: No direct callers detected”</li>
+<li><strong>No callees</strong>: “Calls: Calls no other functions”</li>
+</ul>
+<h3 id="standard-library-detection"><a class="header" href="#standard-library-detection">Standard Library Detection</a></h3>
+<p>Standard library calls are filtered by default and include:</p>
+<ul>
+<li>Functions starting with <code>std::</code>, <code>core::</code>, or <code>alloc::</code></li>
+<li>Common macros: <code>println</code>, <code>print</code>, <code>eprintln</code>, <code>eprint</code>, <code>write</code>, <code>writeln</code>, <code>format</code>, <code>panic</code>, <code>assert</code>, <code>debug_assert</code></li>
+</ul>
+<p>External crate calls are identified as functions containing <code>::</code> that aren’t in the standard library or the current crate (<code>crate::</code>).</p>
+<p><strong>Source</strong>: Detection logic from src/priority/formatter/dependencies.rs:is_standard_library_call, is_external_crate_call</p>
+<h2 id="validation-and-health-scoring"><a class="header" href="#validation-and-health-scoring">Validation and Health Scoring</a></h2>
+<p>The call graph validator checks for structural issues:</p>
+<pre><code class="language-bash">debtmap analyze . --validate-call-graph
+</code></pre>
+<p>Validation reports include:</p>
+<ul>
+<li><strong>Health score</strong> - Overall graph quality (0-100)</li>
+<li><strong>Structural issues</strong> - Orphaned functions, disconnected components</li>
+<li><strong>Warnings</strong> - Potential resolution problems</li>
+</ul>
+<p><strong>Source</strong>: Validation implementation from src/analyzers/call_graph/validation.rs:185 (CallGraphValidator)</p>
+<h2 id="performance-tuning"><a class="header" href="#performance-tuning">Performance Tuning</a></h2>
+<p>For large codebases, consider these performance optimizations:</p>
+<ul>
+<li><strong>Disable parallel processing</strong> (<code>--no-parallel</code>) - Only for debugging; reduces performance</li>
+<li><strong>Control analysis depth</strong> - Use <code>max_analysis_depth</code> in configuration to limit transitive analysis</li>
+<li><strong>Disable optional analysis</strong> - Turn off <code>enable_trait_analysis</code>, <code>enable_function_pointer_tracking</code>, or <code>enable_framework_patterns</code> if not needed</li>
+</ul>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="unresolved-calls"><a class="header" href="#unresolved-calls">Unresolved Calls</a></h3>
+<p>If you see unresolved calls in debug output:</p>
+<ol>
+<li><strong>Check imports</strong> - Ensure all modules are properly imported</li>
+<li><strong>Verify visibility</strong> - Confirm functions are accessible (not private across module boundaries)</li>
+<li><strong>Review module structure</strong> - Complex module hierarchies may require explicit path configuration</li>
+<li><strong>Use tracing</strong> - Run with <code>--trace-function</code> to see detailed resolution attempts</li>
+</ol>
+<h3 id="incorrect-callercallee-counts"><a class="header" href="#incorrect-callercallee-counts">Incorrect Caller/Callee Counts</a></h3>
+<p>If counts seem wrong:</p>
+<ol>
+<li><strong>Validate structure</strong> - Run <code>--validate-call-graph</code> to check for structural issues</li>
+<li><strong>Review debug output</strong> - Use <code>--debug-call-graph</code> to see call resolution details</li>
+</ol>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li><a href="architectural-analysis.html">Architectural Analysis</a> - Circular dependency detection</li>
+<li><a href="context-providers.html">Context Providers</a> - Critical path analysis</li>
+<li><a href="coverage-integration.html">Coverage Integration</a> - Transitive coverage propagation</li>
+<li><a href="configuration.html">Configuration</a> - Complete configuration reference</li>
+<li><a href="cli-reference.html">CLI Reference</a> - All command-line flags</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="boilerplate-vs-complexity.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="rust-effect-analysis.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="boilerplate-vs-complexity.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="rust-effect-analysis.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
