@@ -7,7 +7,7 @@
 //! - Try-catch blocks with similar error handling
 
 use crate::complexity::entropy_core::PatternMetrics;
-use std::collections::HashMap;
+use foldhash::{HashMap, HashMapExt};
 use tree_sitter::Node;
 
 /// Detect JavaScript/TypeScript specific patterns

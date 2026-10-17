@@ -4,7 +4,7 @@ use crate::analyzers::go::purity::analyze_purity;
 use crate::analyzers::go::types::{GoAnalysis, GoFunction, GoFunctionKind};
 use crate::core::PurityLevel;
 use crate::core::ast::GoAst;
-use std::collections::{HashMap, HashSet};
+use foldhash::{HashMap, HashSet};
 use std::path::Path;
 use tree_sitter::Node;
 
